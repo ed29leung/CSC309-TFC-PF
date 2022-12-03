@@ -36,7 +36,7 @@ class CurrentSubscriptionSerializer(ModelSerializer):
         # validate the interval in plan if there is a plan submitted
         if data.get('plan') is not None:
             interval = SubscriptionPlan.objects.get(id=data['plan'].pk).interval
-            if interval not in ("monthly", "yearly"):
+            if interval not in ("monthly", "yearly", "weekly"):
                 raise ValidationError('invalid interval')
         return data
         # else:
@@ -79,6 +79,8 @@ class CurrentSubscriptionSerializer(ModelSerializer):
                 expiry = today.replace(year=today.year + 1, month=1, day=1)
             else:
                 expiry = today.replace(month=today.month + 1)
+        elif interval == 'weekly':
+            expiry = today + datetime.timedelta(days=7)
         else:
             raise ValidationError('invalid interval')
         return CurrentSubscription.objects.create(account=current_account, 
