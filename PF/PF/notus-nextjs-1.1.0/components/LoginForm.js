@@ -22,7 +22,7 @@ function LoginForm() {
     		    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     		    body: JSON.stringify(data)
     		};
-    		fetch('http://localhost:8000/api-auth/login/', requestOptions)
+    		fetch('http://localhost:8000/accounts/login/', requestOptions)
 		//TODO: render any backend errors here.
 	}
 	return (
