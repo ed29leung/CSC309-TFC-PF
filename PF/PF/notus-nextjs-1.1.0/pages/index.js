@@ -113,7 +113,7 @@ export default function Index() {
                         Austin M.
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-	  		"Just smashed another PB the other day. TFC ROCKS!!"
+	  		"Just smashed another PR the other day. TFC ROCKS!!"
                       </p>
                     </div>
                   </div>
