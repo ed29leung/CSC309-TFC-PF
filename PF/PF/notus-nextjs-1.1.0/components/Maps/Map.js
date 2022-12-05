@@ -1,12 +1,14 @@
-import React from "react";
+import React, { memo } from "react";
 
-function MapExample() {
+var markersArray = [];
+
+function Map({ updatePos }) {
   const mapRef = React.useRef(null);
   React.useEffect(() => {
     let google = window.google;
     let map = mapRef.current;
-    let lat = "40.748817";
-    let lng = "-73.985428";
+    let lat = "43.6426";
+    let lng = "-79.3871";
     const myLatlng = new google.maps.LatLng(lat, lng);
     const mapOptions = {
       zoom: 12,
@@ -59,6 +61,7 @@ function MapExample() {
 
     map = new google.maps.Map(map, mapOptions);
 
+	  {/*
     const marker = new google.maps.Marker({
       position: myLatlng,
       map: map,
@@ -73,9 +76,42 @@ function MapExample() {
     const infowindow = new google.maps.InfoWindow({
       content: contentString,
     });
+    */}
 
-    google.maps.event.addListener(marker, "click", function () {
-      infowindow.open(map, marker);
+	  // pin functions from 
+	  // https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+	  let markers = [];
+
+	  function addMarker(position) {
+		  const marker = new google.maps.Marker({
+		    position,
+		    map,
+		  });
+		  updatePos(position.toString());
+		
+		  markers.push(marker);
+		}
+
+
+	  function setMapOnAll(map) {
+		  for (let i = 0; i < markers.length; i++) {
+		    markers[i].setMap(map);
+		  }
+		}
+
+	function placeMarker(position, map) {
+	    deleteMarkers();
+		addMarker(position);
+	    map.panTo(position);
+	}
+
+	  function deleteMarkers(){
+		  setMapOnAll(null);
+		  markers = [];
+		}
+
+    map.addListener("click", function (e) {
+	    placeMarker(e.latLng, map);
     });
   });
   return (
@@ -87,4 +123,4 @@ function MapExample() {
   );
 }
 
-export default MapExample;
+export default memo(Map);
