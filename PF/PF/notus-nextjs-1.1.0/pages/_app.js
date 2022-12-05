@@ -70,8 +70,8 @@ export default class MyApp extends App {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <title>Toronto Fitness Club</title>
-          <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+          <title>TFC</title>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbisf0uGt1jIv8MN7CoZJANe0M7iGXgac"></script>
         </Head>
         <Layout>
           <Component {...pageProps} />
