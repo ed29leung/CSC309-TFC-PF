@@ -33,10 +33,12 @@ class AccountView(RetrieveAPIView):
     """
     View a given account.
     """
+    permission_classes = [IsAuthenticated]
+    # make sure user is logged in
     serializer_class = AccountSerializer
 
     def get_object(self):
-        return get_object_or_404(Account, id=self.kwargs['account_id'])
+        return get_object_or_404(Account, id=self.request.user.pk)
 
 
 class AccountUpdateView(UpdateAPIView):

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 function LoginForm() {
 	const url = ""
 	const [data, setData] = useState({
@@ -22,7 +23,15 @@ function LoginForm() {
     		    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     		    body: JSON.stringify(data)
     		};
-    		fetch('http://localhost:8000/accounts/login/', requestOptions)
+    		fetch('http://localhost:8000/accounts/login/', requestOptions).then(response => response.json())
+        .then(data => { //call the response.json() data
+          if (data.access) {
+            //JSON.stringify before storing
+            localStorage.setItem("tokens", JSON.stringify(data));
+            //Source: https://www.bezkoder.com/react-jwt-auth/ 
+          }
+          return data;
+      })
 		//TODO: render any backend errors here.
 	}
 	return (
