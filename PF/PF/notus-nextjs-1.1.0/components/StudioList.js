@@ -10,10 +10,7 @@ const callRestApi = async (pos) => {
 
 	const url = 'http://localhost:8000/studios/list/' + clean_pos
     const response = await fetch(url);
-    console.log(response);
     const jsonResponse = await response.json();
-    console.log(pos);
-    console.log(jsonResponse);
 	const arrayOfLists = jsonResponse.results.map(
       key => (	<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
 			<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -41,8 +38,6 @@ function StudioList({ pos }) {
           result => setApiResponse(result));
   },[pos]);
 
-	console.log(pos != '')
-	console.log(pos)
 
 	return(
 	<>
