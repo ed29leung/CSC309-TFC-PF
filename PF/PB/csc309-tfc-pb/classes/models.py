@@ -25,6 +25,23 @@ class Class(m.Model):
     def clean(self):
         if self.class_start > self.class_end:
             raise ValidationError('Class start date cannot be later than class end date')
+        if self.days_inbetween < 0:
+            raise ValidationError('Days inbetween cannot be negative')
+        if self.spots <= 0:
+            raise ValidationError('Spots cannot be zero or negative')
+        if self.class_start < datetime.date.today():
+            raise ValidationError('Class start date cannot be in the past')
+        if self.class_end < datetime.date.today():
+            raise ValidationError('Class end date cannot be in the past')
+        if self.class_time < datetime.time(0, 0):
+            raise ValidationError('Class time cannot be negative')
+        if self.class_time > datetime.time(23, 59):
+            raise ValidationError('Class time cannot be greater than 23:59')
+        if self.duration <= datetime.timedelta(0):
+            raise ValidationError('Class duration cannot be negative')
+        if self.duration > datetime.timedelta(days=1):
+            raise ValidationError('Class duration cannot be greater than 1 day')
+        
 
         return super().clean()
     
@@ -41,6 +58,15 @@ class Class(m.Model):
 
     def set_time(self):
         self.duration = self.duration
+
+        if self.days_inbetween == 0:
+            # one time class
+            ClassTimeTable.objects.create(
+                classid=self, 
+                time=make_aware(datetime.datetime.combine(self.class_start, self.class_time)),
+                spotleft=self.spots
+            )
+            return
 
         time_i = datetime.datetime.combine(self.class_start, self.class_time)
         while time_i <= datetime.datetime.combine(self.class_end, self.class_time):
