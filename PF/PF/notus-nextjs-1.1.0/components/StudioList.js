@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // code from https://dev.to/will_yama/react-rest-api-how-to-render-a-list-from-a-json-response-4964
-const callRestApi = async (pos) => {
+const callRestApi = async (pos, updateStudios) => {
 	if (pos === '') {
 		return null
 	}
@@ -26,15 +26,18 @@ const callRestApi = async (pos) => {
 		</div>
       )
     )
+	const studio_coords = jsonResponse.results.map(
+		key => [key.latitude, key.longitude, key.name])
+    updateStudios(studio_coords);
     return arrayOfLists;
 };
 
-function StudioList({ pos }) {
+function StudioList({ pos, updateStudios }) {
 		
 	const [apiResponse, setApiResponse] = useState('');
 
   useEffect(() => {
-      callRestApi(pos).then(
+      callRestApi(pos, updateStudios).then(
           result => setApiResponse(result));
   },[pos]);
 

@@ -18,7 +18,13 @@ function handleCoordChange() {
 }
 
 export default function Maps() {
-	const [pos, updatePos] = React.useState('');
+	const [pos, setPos] = React.useState('(43.6426, -79.3871)');
+	//const [studios, updateStudios] = React.useState('');
+	const studiosRef = React.useRef();
+	const [studios, setStudios] = React.useState('');
+	function updateStudios(new_studios) {
+		studiosRef.current = new_studios;
+	}
   return (
     <>
       <div className="flex flex-wrap">
@@ -44,12 +50,14 @@ export default function Maps() {
 	  </div>
 	  	<StudioList
 	  		pos={pos}
+	  		updateStudios={updateStudios}
 	  	/>
 	</div>
         <div className="w-6/12 px-4">
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
             <Map
-	  	updatePos={updatePos}
+	  	setPos={setPos}
+	  	studios={studiosRef}
 	  	/>
           </div>
         </div>

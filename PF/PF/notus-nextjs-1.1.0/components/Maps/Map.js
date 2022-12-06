@@ -1,8 +1,8 @@
-import React, { memo } from "react";
+import React, { memo, useReducer } from "react";
 
 var markersArray = [];
 
-function Map({ updatePos }) {
+function Map({ studios, setPos }) {
   const mapRef = React.useRef(null);
   React.useEffect(() => {
     let google = window.google;
@@ -81,15 +81,27 @@ function Map({ updatePos }) {
 	  // pin functions from 
 	  // https://developers.google.com/maps/documentation/javascript/examples/marker-remove
 	  let markers = [];
+	  let studioMarkers = [];
 
 	  function addMarker(position) {
 		  const marker = new google.maps.Marker({
 		    position,
 		    map,
+      			animation: google.maps.Animation.DROP,
+      			title: "You",
 		  });
-		  updatePos(position.toString());
+		  setPos(position.toString());
 		
 		  markers.push(marker);
+		}
+	  function addStudioMarker(position, name, map) {
+		  const marker = new google.maps.Marker({
+			  position,
+		    map,
+      			//animation: google.maps.Animation.DROP,
+      			title: name,
+		  });
+		  studioMarkers.push(marker);
 		}
 
 
@@ -110,8 +122,17 @@ function Map({ updatePos }) {
 		  markers = [];
 		}
 
+	  function updateStudioMarkers(studios, map) {
+		for (let i = 0; i < studios.length; i++) {
+			addStudioMarker(new google.maps.LatLng(studios[i][0], studios[i][1]), studios[i][2], map);
+		}
+	}
     map.addListener("click", function (e) {
 	    placeMarker(e.latLng, map);
+	    try {
+	    updateStudioMarkers(studios.current, map);
+		} catch {
+		}
     });
   });
   return (
