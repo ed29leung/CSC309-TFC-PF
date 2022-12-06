@@ -13,6 +13,10 @@ function AccountForm() {
 		avatar: "",
 		phone_number: "",
 	})
+
+  const [userError, setUserError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [phoneError, setPhoneError] = useState(null);
   // Need handle code to edit fields on forms
   function handle(e){
 		const newData={...data}
@@ -51,7 +55,33 @@ function AccountForm() {
     		    body: JSON.stringify(data)
     		};
         
-    		fetch('http://localhost:8000/accounts/update/', requestOptions)
+    		fetch('http://localhost:8000/accounts/update/', requestOptions).then(response => {
+          if (!response.ok) {
+            // get error message from response body if status is not ok and pass to error
+            // https://stackoverflow.com/a/49160068
+            return response.text().then(text => {throw new Error(text)})
+        } //otherwise return the tokens
+         return response.json()})
+        .then(formData => { //call the response.json() data
+          return formData;
+      }).catch(error => {
+        //render any backend errors here.
+        const errorObject = JSON.parse(error.message);
+        if (errorObject.username){
+          setUserError(errorObject.username[0]);
+        }
+        else{setUserError(null);}
+
+        if (errorObject.email){
+          setEmailError(errorObject.email[0]);
+        }
+        else{setEmailError(null);}
+        
+        if (errorObject.phone_number){
+          setPhoneError(errorObject.phone_number[0]);
+        }
+        else{setPhoneError(null);}
+    });
 		//TODO: render any backend errors here.
 	}
 	return (
@@ -70,8 +100,8 @@ function AccountForm() {
 			id="username"
 	  	      value={data.username}
 	  		onChange={(e) => handle(e)}
-
                     />
+                  {userError && <h2>{userError}</h2>}
                   </div>
                   <div className="relative w-full mb-3">
                     <label
@@ -121,6 +151,7 @@ function AccountForm() {
 	  		value={data.email}
 	  		onChange={(e) => handle(e)}
                     />
+                  {emailError && <h2>{emailError}</h2>}
                   </div>
                   <div className="relative w-full mb-3">
                     <label
@@ -137,6 +168,7 @@ function AccountForm() {
 	  		value={data.phone_number}
 	  		onChange={(e) => handle(e)}
                     />
+                  {phoneError && <h2>{phoneError}</h2>}
                   </div>
 	  		{/*
                   <div className="relative w-full mb-3">

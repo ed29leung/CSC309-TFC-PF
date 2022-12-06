@@ -6,7 +6,10 @@ function LoginForm() {
 	const [data, setData] = useState({
 		username: "",
 		password: "",
-	})
+	});
+  //make a state variable for the errors in the form: 
+  const [userError, setUserError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
 	// code from https://www.youtube.com/watch?v=9KaMsGSxGno
 	function handle(e){
@@ -23,16 +26,40 @@ function LoginForm() {
     		    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     		    body: JSON.stringify(data)
     		};
-    		fetch('http://localhost:8000/accounts/login/', requestOptions).then(response => response.json())
-        .then(data => { //call the response.json() data
-          if (data.access) {
+    		fetch('http://localhost:8000/accounts/login/', requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            // get error message from response body if status is not ok and pass to error
+            // https://stackoverflow.com/a/49160068
+            return response.text().then(text => {throw new Error(text)})
+        } //otherwise return the tokens
+         return response.json()})
+        .then(tokenData => { //call the response.json() data
+          if (tokenData.access) {
             //JSON.stringify before storing
-            localStorage.setItem("tokens", JSON.stringify(data));
-            //Source: https://www.bezkoder.com/react-jwt-auth/ 
+            localStorage.setItem("tokens", JSON.stringify(tokenData));
+            //Source: https://www.bezkoder.com/react-jwt-auth/
+            //if login sucessful, store the username from the form data in browser 
+            localStorage.setItem("username", data.username);
+            console.log(localStorage.getItem("username"));
           }
-          return data;
-      })
-		//TODO: render any backend errors here.
+          return tokenData;
+      }).catch(error => {
+        //render any backend errors here.
+        // the JSON text is in Error Message, so convert to JSON object using Parse and 
+        // then extract the message from the array
+        const errorObject = JSON.parse(error.message);
+        //console.log(errorObject.username[0]);
+        // if the field is in the error response, display error, otherwise remove it
+        if (errorObject.username){
+          setUserError(errorObject.username[0]);
+        }
+        else{setUserError(null)}
+        if (errorObject.password){
+          setPasswordError(errorObject.password[0]);
+        }
+        else{setPasswordError(null)}
+    });
 	}
 	return (
 		<form onSubmit={(e) => submit(e)}>
@@ -52,6 +79,7 @@ function LoginForm() {
 	  		onChange={(e) => handle(e)}
 
                     />
+                    {userError && <h2>{userError}</h2>}
                   </div>
                   <div className="relative w-full mb-3">
                     <label
@@ -68,6 +96,7 @@ function LoginForm() {
 	  		value={data.password}
 	  		onChange={(e) => handle(e)}
                     />
+                  {passwordError && <h2>{passwordError}</h2>}
                   </div>
 	  		{/*
                   <div className="relative w-full mb-3">
