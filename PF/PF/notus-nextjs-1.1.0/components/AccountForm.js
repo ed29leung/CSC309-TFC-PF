@@ -63,10 +63,15 @@ function AccountForm() {
         } //otherwise return the tokens
          return response.json()})
         .then(formData => { //call the response.json() data
+          //TODO: change username in local storage?
           return formData;
       }).catch(error => {
         //render any backend errors here.
         const errorObject = JSON.parse(error.message);
+        if (errorObject.detail && errorObject.code){
+          //invalid token
+          Router.push("/accounts/login/");
+        }
         if (errorObject.username){
           setUserError(errorObject.username[0]);
         }

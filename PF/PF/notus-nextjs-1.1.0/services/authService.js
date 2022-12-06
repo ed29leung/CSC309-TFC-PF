@@ -3,6 +3,7 @@ import React from "react";
 class AuthService {
     logout(){
         localStorage.removeItem("tokens");
+        localStorage.removeItem("currentUser");
     }
     
     // getCurrentToken(){

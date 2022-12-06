@@ -40,8 +40,8 @@ function LoginForm() {
             localStorage.setItem("tokens", JSON.stringify(tokenData));
             //Source: https://www.bezkoder.com/react-jwt-auth/
             //if login sucessful, store the username from the form data in browser 
-            localStorage.setItem("username", data.username);
-            console.log(localStorage.getItem("username"));
+            localStorage.setItem("currentUser", data.username);
+            localStorage.removeItem("username");
           }
           return tokenData;
       }).catch(error => {
@@ -54,11 +54,18 @@ function LoginForm() {
         if (errorObject.username){
           setUserError(errorObject.username[0]);
         }
-        else{setUserError(null)}
+        if (errorObject.detail && (!errorObject.code)){
+          //backend sent invalid login message
+          setUserError("Please check your username and password and try again.");
+        }
+        else if ((!errorObject.username) && (!errorObject.detail)){
+          setUserError(null);
+        }
         if (errorObject.password){
           setPasswordError(errorObject.password[0]);
         }
-        else{setPasswordError(null)}
+        else{setPasswordError(null);}
+        
     });
 	}
 	return (
