@@ -1,12 +1,14 @@
-import React from "react";
+import React, { memo, useReducer } from "react";
 
-function MapExample() {
+var markersArray = [];
+
+function Map({ studios, setPos }) {
   const mapRef = React.useRef(null);
   React.useEffect(() => {
     let google = window.google;
     let map = mapRef.current;
-    let lat = "40.748817";
-    let lng = "-73.985428";
+    let lat = "43.6426";
+    let lng = "-79.3871";
     const myLatlng = new google.maps.LatLng(lat, lng);
     const mapOptions = {
       zoom: 12,
@@ -59,6 +61,7 @@ function MapExample() {
 
     map = new google.maps.Map(map, mapOptions);
 
+	  {/*
     const marker = new google.maps.Marker({
       position: myLatlng,
       map: map,
@@ -73,9 +76,63 @@ function MapExample() {
     const infowindow = new google.maps.InfoWindow({
       content: contentString,
     });
+    */}
 
-    google.maps.event.addListener(marker, "click", function () {
-      infowindow.open(map, marker);
+	  // pin functions from 
+	  // https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+	  let markers = [];
+	  let studioMarkers = [];
+
+	  function addMarker(position) {
+		  const marker = new google.maps.Marker({
+		    position,
+		    map,
+      			animation: google.maps.Animation.DROP,
+      			title: "You",
+		  });
+		  setPos(position.toString());
+		
+		  markers.push(marker);
+		}
+	  function addStudioMarker(position, name, map) {
+		  const marker = new google.maps.Marker({
+			  position,
+		    map,
+      			//animation: google.maps.Animation.DROP,
+      			title: name,
+		  });
+		  studioMarkers.push(marker);
+		}
+
+
+	  function setMapOnAll(map) {
+		  for (let i = 0; i < markers.length; i++) {
+		    markers[i].setMap(map);
+		  }
+		}
+
+	function placeMarker(position, map) {
+	    deleteMarkers();
+		addMarker(position);
+	    map.panTo(position);
+	}
+
+	  function deleteMarkers(){
+		  setMapOnAll(null);
+		  markers = [];
+		}
+
+	  function updateStudioMarkers(studios, map) {
+		for (let i = 0; i < studios.length; i++) {
+			addStudioMarker(new google.maps.LatLng(studios[i][0], studios[i][1]), studios[i][2], map);
+		}
+	}
+    map.addListener("click", function (e) {
+	    placeMarker(e.latLng, map);
+	    try {
+	    updateStudioMarkers(studios.current, map);
+		} catch {
+		}
     });
   });
   return (
@@ -87,4 +144,4 @@ function MapExample() {
   );
 }
 
-export default MapExample;
+export default memo(Map);
