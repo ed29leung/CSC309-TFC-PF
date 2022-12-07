@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from "next/link";
 
 // code from https://dev.to/will_yama/react-rest-api-how-to-render-a-list-from-a-json-response-4964
 const callRestApi = async (pos, updateStudios, filter) => {
@@ -39,7 +40,12 @@ const callRestApi = async (pos, updateStudios, filter) => {
         <div className="flex-auto p-4">
           <div className="flex flex-wrap">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-		<h6 className="font-semibold text-blueGray-700">{key.address} - {key.name}</h6>
+	      <Link href={{
+            pathname: '/studios/[id]',
+            query: { id: key.id },
+          }}>
+		<a className="font-semibold text-blueGray-700"><h6>{key.address} - {key.name}</h6></a>
+	      </Link>
 		<small className="font-semibold text-blueGray-400">{key.phone_number}</small>
 		</div>
 		</div>
@@ -95,12 +101,13 @@ function StudioList({ pos, updateStudios }) {
 		value={filter.query}
 		onChange={(e) => handle(e)}
               />
+		<div className="flex-col w-full">
 		<h5 className="text-blueGray-400 uppercase font-bold text-xs m-1 w-full">
                 Or Filter By:
               </h5>
 
 		<div className="grid rpace-4 grid-cols-2 w-full">
-		<div>
+		<div className="p-1">
               <input
                 type="text"
                 placeholder="Studio Name"
@@ -110,7 +117,7 @@ function StudioList({ pos, updateStudios }) {
 		onChange={(e) => handle(e)}
               />
 		</div>
-		<div>
+		<div className="p-1">
               <input
                 type="text"
                 placeholder="Studio Amenities"
@@ -120,24 +127,29 @@ function StudioList({ pos, updateStudios }) {
 		onChange={(e) => handle(e)}
               />
 		</div>
+		<div className="p-1">
               <input
                 type="text"
                 placeholder="Studio Class Name"
 		id="classes"
-                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-5/12 pl-10 "
+                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-full pl-10 "
 		value={filter.classes}
 		onChange={(e) => handle(e)}
               />
+		</div>
+		<div className="p-1">
               <input
                 type="text"
                 placeholder="Coach Name"
 		id="coach"
-                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-5/12 pl-10 "
+                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-full pl-10 "
 		value={filter.coach}
 		onChange={(e) => handle(e)}
               />
 		</div>
+		</div>
             </div>
+		</div>
           </form>
             </div>
 
