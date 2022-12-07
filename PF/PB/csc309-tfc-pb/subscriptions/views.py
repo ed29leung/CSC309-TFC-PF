@@ -10,6 +10,7 @@ from subscriptions.serializers import (
 from django.shortcuts import get_object_or_404
 from payments.models import PaymentInfo, PaymentHistory
 from accounts.models import Account
+from rest_framework.views import APIView
 from rest_framework.response import Response
 import datetime
 from payments.functions import create_payment_history
@@ -74,3 +75,28 @@ class UpdateSubscriptionView(generics.UpdateAPIView):
             create_payment_history(current_account, sub_plan_id)
         return current_sub
         # will return "Not found" if current subscription does not belong to user
+
+class ListSubscriptionView(generics.ListAPIView):
+    """
+    Returns a list of the currentlt availible subscription plans.
+    """
+    serializer_class = SubscriptionPlanSerializer
+    
+    def get_queryset(self):
+        return SubscriptionPlan.objects.all()
+
+class SubscriptionStatusView(APIView):
+    """
+    Returns if the user is currently subscribed or not, or an Error if 
+    they have no payment information. 
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if PaymentInfo.objects.filter(account=request.user).exists():
+            if CurrentSubscription.objects.filter(account=request.user).exists():
+                return Response({"subscription": True}, status=200)
+            else:
+                return Response({"subscription": False}, status=200)
+        else:
+            return Response({'error': 'No Payment Info for this User'}, status=400)

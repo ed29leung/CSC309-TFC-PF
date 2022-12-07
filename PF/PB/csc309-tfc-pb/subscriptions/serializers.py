@@ -12,7 +12,8 @@ class SubscriptionPlanSerializer(ModelSerializer):
     class Meta:
         model = SubscriptionPlan
         fields = [
-            'price',
+            'id',
+            'payment',
             'interval',
         ]
 

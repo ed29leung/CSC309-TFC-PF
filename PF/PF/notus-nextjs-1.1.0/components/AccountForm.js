@@ -44,6 +44,8 @@ function AccountForm() {
                 setData(json);
             })
     }, [])
+    //do not include data in the variable for useeffect since it will 
+    // reload every time the value changes
 	function submit(e){
 		e.preventDefault();
     const auth = authHeader();
