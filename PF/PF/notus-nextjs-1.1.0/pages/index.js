@@ -22,7 +22,6 @@ export default function Index() {
               <div className="mt-12">
 	  	<Link href="/accounts/sign-up">
                 <a
-                  target="_blank"
                   className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-orange-500 active:bg-blueGray-500 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                 >
                   Sign Up
@@ -31,7 +30,6 @@ export default function Index() {
 	  	<Link href="/studios">
                 <a
                   className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-600 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
-                  target="_blank"
                 >
                   View Locations
                 </a>
@@ -503,6 +501,7 @@ export default function Index() {
 	*/}
       </section>
 
+      {/*
       <section className="block relative z-1 bg-blueGray-600">
         <div className="container mx-auto">
           <div className="justify-center flex flex-wrap">
@@ -558,7 +557,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/*
       <section className="py-20 bg-blueGray-600 overflow-hidden">
         <div className="container mx-auto pb-64">
           <div className="flex flex-wrap justify-center">
