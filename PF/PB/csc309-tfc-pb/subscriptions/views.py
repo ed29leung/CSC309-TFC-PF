@@ -78,7 +78,7 @@ class UpdateSubscriptionView(generics.UpdateAPIView):
 
 class ListSubscriptionView(generics.ListAPIView):
     """
-    Returns a list of the currentlt availible subscription plans.
+    Returns a list of the currently availible subscription plans.
     """
     serializer_class = SubscriptionPlanSerializer
     
