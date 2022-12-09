@@ -4,6 +4,7 @@ from studios.views import (
         StudioView,
         ListStudioImagesView,
         ListAmenitiesView,
+        SearchStudioView
         )
 
 app_name = 'studios'
@@ -13,5 +14,6 @@ urlpatterns = [
         path('<int:studio>/', StudioView.as_view()),
         path('<int:studio>/images/', ListStudioImagesView.as_view()),
         path('<int:studio>/amenities/', ListAmenitiesView.as_view()),
+        path('search/', SearchStudioView.as_view()),
 ]
 

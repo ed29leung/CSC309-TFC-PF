@@ -46,6 +46,14 @@ class ListStudioByProximityView(generics.ListAPIView):
 
 
         return queryset
+        
+class SearchStudioView(generics.ListAPIView):
+    serializer_class = StudioSerializer
+    queryset = Studio.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['name', 'amenities__amenity_type', 'tfc_class__name', 'tfc_class__coach']
+    search_fields = ['name', 'amenities__amenity_type', 'tfc_class__name', 'tfc_class__coach']
+
 
 class StudioView(generics.RetrieveAPIView):
     """
