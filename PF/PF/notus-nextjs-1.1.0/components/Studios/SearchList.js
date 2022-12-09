@@ -45,7 +45,7 @@ const callRestApi = async (pos, updateStudios, filter, pgOffset, setTotal) => {
             pathname: '/studios/[id]',
             query: { id: key.id },
           }}>
-		<a className="font-semibold text-blueGray-700"><h6>{key.address} - {key.name}</h6></a>
+		<a className="font-semibold text-blueGray-700"><h6>{key.name} - {key.address}</h6></a>
 	      </Link>
 		<small className="font-semibold text-blueGray-400">{key.phone_number}</small>
 		</div>
@@ -164,7 +164,7 @@ function StudioList({ pos, updateStudios }) {
 
 
 	  	</div>
-	<div className="relative flex flex-col min-w-0 w-6/12 break-words bg-white rounded mb-6 ">
+	<div className="relative flex p-4 flex-col min-w-0 w-6/12 break-words rounded mb-6 ">
 		{apiResponse}
 
 		    {pgOffset > 0 ? 

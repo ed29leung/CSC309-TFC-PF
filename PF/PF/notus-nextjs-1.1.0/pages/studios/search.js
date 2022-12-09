@@ -39,7 +39,7 @@ export default function Search() {
 	  		<h1> STUDIOS </h1>
 	  	</span>
 	                <h5 className="text-blueGray-400 uppercase font-bold text-xs absolute bottom-0">
-                Drop a pin to get started.
+                Find the location right for you!
               </h5>
 
 	  	</div>
