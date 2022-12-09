@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import authHeader from "services/authHeader";
+import Router from "next/router";
 
 const profileViewApi = async (studio_id) => {
 	if (studio_id === '') {
