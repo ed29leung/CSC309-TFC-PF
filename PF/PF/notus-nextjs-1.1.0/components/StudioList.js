@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 
 // code from https://dev.to/will_yama/react-rest-api-how-to-render-a-list-from-a-json-response-4964
-const callRestApi = async (pos, updateStudios, filter) => {
+const callRestApi = async (pos, updateStudios, filter, pgOffset) => {
 	if (pos === '') {
 		return null
 	}
@@ -10,7 +10,7 @@ const callRestApi = async (pos, updateStudios, filter) => {
 	const clean_pos = pos.split(" ").join("").slice(1, -1)
 	
 	// process params if they exist
-	var params = '?'
+	var params = ''
 	if (filter.query !== '') {
 		params = params + 'search=' + filter.query
 	} else {
@@ -31,7 +31,8 @@ const callRestApi = async (pos, updateStudios, filter) => {
 
 
 
-	const url = 'http://localhost:8000/studios/list/' + clean_pos + params
+	const url = 'http://localhost:8000/studios/list/' + clean_pos + params + `?limit=${perPage}&offset=${pgOffset}`
+	console.log(url)
     const response = await fetch(url);
     const jsonResponse = await response.json();
 	const arrayOfLists = jsonResponse.results.map(
@@ -60,6 +61,8 @@ const callRestApi = async (pos, updateStudios, filter) => {
     return arrayOfLists;
 };
 
+const perPage = 4;
+
 
 
 function StudioList({ pos, updateStudios }) {
@@ -71,11 +74,16 @@ function StudioList({ pos, updateStudios }) {
 		amenities: '',
 		classes: '',
 		coach: '' });
+	const [pgOffset, setPgOffset] = useState(0);
+	    const [total, setTotal] = useState(0);
+
+
+
 
   useEffect(() => {
-      callRestApi(pos, updateStudios, filter).then(
+      callRestApi(pos, updateStudios, filter, pgOffset).then(
           result => setApiResponse(result));
-  },[pos, filter]);
+  },[pos, filter, pgOffset]);
 
 	function handle(e){
 		const newFilter={...filter}
@@ -156,6 +164,15 @@ function StudioList({ pos, updateStudios }) {
 
 	  	</div>
 		{apiResponse}
+
+		    {pgOffset > 0 ? 
+        <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
+            type="button"
+            onClick={() => setPgOffset(Math.max(0, pgOffset - perPage))}> prev </button> : <></>}
+    { pgOffset < (total - perPage) ? 
+        <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            type="button"
+            onClick={() => setPgOffset(pgOffset + perPage)}> next </button> : <></>}
 	</>
 	)
 }
