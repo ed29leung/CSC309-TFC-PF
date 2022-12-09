@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { render } from 'react-dom';
 import Link from "next/link";
 
@@ -23,6 +23,8 @@ export default function Maps() {
 	//const [studios, updateStudios] = React.useState('');
 	const studiosRef = React.useRef();
 	const [studios, setStudios] = React.useState('');
+	const [pgOffset, setPgOffset] = useState(0);
+
 	function updateStudios(new_studios) {
 		studiosRef.current = new_studios;
 	}
@@ -65,6 +67,8 @@ export default function Maps() {
 	  	<MapList
 	  		pos={pos}
 	  		updateStudios={updateStudios}
+	  		pgOffset={pgOffset}
+	  		setPgOffset={setPgOffset}
 	  	/>
 	</div>
         <div className="w-6/12 px-4">
@@ -72,6 +76,7 @@ export default function Maps() {
             <Map
 	  	setPos={setPos}
 	  	studios={studiosRef}
+	  	setPgOffset={setPgOffset}
 	  	/>
           </div>
         </div>

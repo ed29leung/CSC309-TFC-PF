@@ -2,7 +2,7 @@ import React, { memo, useReducer } from "react";
 
 var markersArray = [];
 
-function Map({ studios, setPos }) {
+function Map({ studios, setPos, setPgOffset }) {
   const mapRef = React.useRef(null);
   React.useEffect(() => {
     let google = window.google;
@@ -91,6 +91,7 @@ function Map({ studios, setPos }) {
       			title: "You",
 		  });
 		  setPos(position.toString());
+		  setPgOffset(0);
 		
 		  markers.push(marker);
 		}

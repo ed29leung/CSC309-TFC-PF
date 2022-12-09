@@ -45,7 +45,7 @@ const perPage = 4;
 
 
 
-function MapList({ pos, updateStudios }) {
+function MapList({ pos, updateStudios, pgOffset, setPgOffset }) {
 		
 	const [apiResponse, setApiResponse] = useState('');
 	const [filter, setFilter] = useState({
@@ -54,7 +54,6 @@ function MapList({ pos, updateStudios }) {
 		amenities: '',
 		classes: '',
 		coach: '' });
-	const [pgOffset, setPgOffset] = useState(0);
 	    const [total, setTotal] = useState(0);
 
 
@@ -73,78 +72,6 @@ function MapList({ pos, updateStudios }) {
 
 	return(
 	<>
-		{/*
-	<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
-
-			<div className="relative flex flex-col min-w-0 break-words rounded shadow-lg">
-		          <form className="relative flex mb-6 xl:mb-0">
-            <div className="relative flex w-full flex-wrap items-stretch">
-              <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
-                <i className="fas fa-search"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Search here..."
-		id="query"
-                className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
-		value={filter.query}
-		onChange={(e) => handle(e)}
-              />
-		<div className="flex-col w-full">
-		<h5 className="text-blueGray-400 uppercase font-bold text-xs m-1 w-full">
-                Or Filter By:
-              </h5>
-
-		<div className="grid rpace-4 grid-cols-2 w-full">
-		<div className="p-1">
-              <input
-                type="text"
-                placeholder="Studio Name"
-		id="name"
-                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-full pl-10 "
-		value={filter.name}
-		onChange={(e) => handle(e)}
-              />
-		</div>
-		<div className="p-1">
-              <input
-                type="text"
-                placeholder="Studio Amenities"
-		id="amenities"
-                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-full pl-10 "
-		value={filter.amenities}
-		onChange={(e) => handle(e)}
-              />
-		</div>
-		<div className="p-1">
-              <input
-                type="text"
-                placeholder="Studio Class Name"
-		id="classes"
-                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-full pl-10 "
-		value={filter.classes}
-		onChange={(e) => handle(e)}
-              />
-		</div>
-		<div className="p-1">
-              <input
-                type="text"
-                placeholder="Coach Name"
-		id="coach"
-                className="border-0 px-3 py-3 placeholder-blueGray-400 text-blueGray-600 relative bg-white bg-white rounded text-sm outline-none focus:outline-none focus:ring w-full pl-10 "
-		value={filter.coach}
-		onChange={(e) => handle(e)}
-              />
-		</div>
-		</div>
-            </div>
-		</div>
-          </form>
-            </div>
-
-
-	  	</div>
-		*/}
 		{apiResponse}
 
 		    {pgOffset > 0 ? 
