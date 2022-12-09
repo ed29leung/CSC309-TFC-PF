@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 
 // code from https://dev.to/will_yama/react-rest-api-how-to-render-a-list-from-a-json-response-4964
-const callRestApi = async (pos, updateStudios, filter, pgOffset) => {
+const callRestApi = async (pos, updateStudios, filter, pgOffset, setTotal) => {
 	if (pos === '') {
 		return null
 	}
@@ -12,7 +12,7 @@ const callRestApi = async (pos, updateStudios, filter, pgOffset) => {
 	// process params if they exist
 	var params = ''
 	if (filter.query !== '') {
-		params = params + 'search=' + filter.query
+		params = params + 'search=' + filter.query + '&'
 	} else {
 		if (filter.name !== '') {
 			params = params + 'name=' + filter.name + '&'
@@ -26,14 +26,15 @@ const callRestApi = async (pos, updateStudios, filter, pgOffset) => {
 		if (filter.coach !== '') {
 			params = params + 'tfc_class__coach=' + filter.coach + '&'
 		}
-		params = params.slice(0, -1)
 	}
 
 
 
-	const url = 'http://localhost:8000/studios/search/?' + params + `&limit=${perPage}&offset=${pgOffset}`
+	const url = 'http://localhost:8000/studios/search/?' + params + `limit=${perPage}&offset=${pgOffset}`
+	console.log(url)
     const response = await fetch(url);
     const jsonResponse = await response.json();
+	setTotal(jsonResponse.count);
 	const arrayOfLists = jsonResponse.results.map(
       key => (	<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
 			<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -80,7 +81,7 @@ function StudioList({ pos, updateStudios }) {
 
 
   useEffect(() => {
-      callRestApi(pos, updateStudios, filter, pgOffset).then(
+      callRestApi(pos, updateStudios, filter, pgOffset, setTotal).then(
           result => setApiResponse(result));
   },[pos, filter, pgOffset]);
 
@@ -165,7 +166,6 @@ function StudioList({ pos, updateStudios }) {
 	  	</div>
 	<div className="relative flex flex-col min-w-0 w-6/12 break-words bg-white rounded mb-6 ">
 		{apiResponse}
-	  	</div>
 
 		    {pgOffset > 0 ? 
         <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
@@ -175,6 +175,7 @@ function StudioList({ pos, updateStudios }) {
         <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
             onClick={() => setPgOffset(pgOffset + perPage)}> next </button> : <></>}
+	  	</div>
 	  	</div>
 	</>
 	)
