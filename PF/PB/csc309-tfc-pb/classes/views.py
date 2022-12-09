@@ -43,8 +43,7 @@ class ListMyClassView(generics.ListAPIView):
             order_by('classtime__time')
 
 
-classtime = openapi.Parameter('classtime id', openapi.IN_QUERY, description="Class time", type=openapi.TYPE_STRING)
-user = openapi.Parameter('account id', openapi.IN_QUERY, description="User ID", type=openapi.TYPE_INTEGER)
+classtime = openapi.Parameter('timeid', openapi.IN_QUERY, description="Class time", type=openapi.TYPE_STRING)
 op = openapi.Parameter('op', openapi.IN_QUERY, description="Operation: either enroll or drop", type=openapi.TYPE_STRING)
 class ModifyClassView(APIView):
     """
@@ -52,9 +51,12 @@ class ModifyClassView(APIView):
     """
     permission_classes = (IsAuthenticated,)
 
-    @swagger_auto_schema(manual_parameters=[classtime, user, op], operation_description="Enroll or drop a class")
+    @swagger_auto_schema(manual_parameters=[classtime, op], operation_description="Enroll or drop a class")
     def post(self, request):
-        user = Account.objects.get(id=request.user.id)
+        try:
+            user = Account.objects.get(id=request.user.id)
+        except Account.DoesNotExist:
+            return Response({'error': 'User not found'}, status=400)
         classtime = request.data.get('timeid')
         op = request.data.get('op')
 
@@ -77,11 +79,11 @@ class ModifyClassView(APIView):
         if op == 'enroll':
             enroll_class = EnrollClass()
             enroll_class.enroll(user, classtime_)
-            return Response({'message': 'Enrolled'}, status=200)
+            return Response({'success': 'Enrolled'}, status=200)
         elif op == 'drop':
             enroll_class = EnrollClass.objects.get(account=user, classtime=classtime_)
             if not enroll_class:
                 return Response({'error': 'Not enrolled'}, status=400)
             
             enroll_class.drop()
-            return Response({'message': 'Dropped'}, status=200)
+            return Response({'success': 'Dropped'}, status=200)
