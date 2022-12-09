@@ -38,7 +38,7 @@ export default function Search() {
               <span className="font-semibold text-xl text-blueGray-700">
 	  		<h1> STUDIOS </h1>
 	  	</span>
-	                <h5 className="text-blueGray-400 uppercase font-bold text-xs">
+	                <h5 className="text-blueGray-400 uppercase font-bold text-xs absolute bottom-0">
                 Drop a pin to get started.
               </h5>
 

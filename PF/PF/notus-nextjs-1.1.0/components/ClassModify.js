@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 
-const callRestApi = async (timeid, op) => {
-    const url = 'http://localhost:8000/classes/modify/'
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            timeid: timeid,
-            op: op,
-        }),
-    });
-    const jsonResponse = await response.json();
-    return jsonResponse;
-};
 
-
-const RegisterClassAlert = async (timeid, op) => {
+const callClassModify = async (timeid, op) => {
     const [showAlert, setShowAlert] = React.useState(true);
 
     const url = 'http://localhost:8000/classes/modify/'

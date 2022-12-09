@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 
 // code from https://dev.to/will_yama/react-rest-api-how-to-render-a-list-from-a-json-response-4964
-const callRestApi = async (pos, updateStudios, pgOffset) => {
+const callRestApi = async (pos, updateStudios, pgOffset, setTotal) => {
 	if (pos === '') {
 		return null
 	}
@@ -13,6 +13,8 @@ const callRestApi = async (pos, updateStudios, pgOffset) => {
 	console.log(url)
     const response = await fetch(url);
     const jsonResponse = await response.json();
+	console.log(jsonResponse);
+	setTotal(jsonResponse.count);
 	const arrayOfLists = jsonResponse.results.map(
       key => (	<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
 			<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -59,7 +61,7 @@ function MapList({ pos, updateStudios }) {
 
 
   useEffect(() => {
-      callRestApi(pos, updateStudios, pgOffset).then(
+      callRestApi(pos, updateStudios, pgOffset, setTotal).then(
           result => setApiResponse(result));
   },[pos, filter, pgOffset]);
 
