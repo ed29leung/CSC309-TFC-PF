@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import RegisterClassAlert from './ClassModify';
 import Link from "next/link";
+
 
 const callRestApi = async (studio_id, filter) => {
    // process filter params if they exist
    // example: http://127.0.0.1:8000/classes/1/upcoming/?classid__name=1&classid__coach=1&classid__duration=1&time=1
+
     var params = '?'
     if (filter.name !== '') {
         params = params + 'classid__name=' + filter.name + '&'
@@ -31,10 +32,7 @@ const callRestApi = async (studio_id, filter) => {
                 <div className="flex-auto p-4">
                     <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-                            <Link href={{
-                                pathname: '/classes/[id]',
-                                query: { id: key.id },
-                            }}>
+                            
                                 <a>
                                     <h3 className="text-blueGray-400 uppercase font-bold text-xs">
                                         {key.class_detail.name
@@ -42,7 +40,6 @@ const callRestApi = async (studio_id, filter) => {
                                     </h3>
                                 </a>
                                 
-                            </Link>
                             <span className="font-semibold text-xl text-blueGray-700">
                                 {key.time}
                             </span>
@@ -52,8 +49,7 @@ const callRestApi = async (studio_id, filter) => {
                             </p>
 
                             <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                onClick={() => RegisterClassAlert(key.id, 'enroll')}
-                                type="button">
+                                >
                                 <i className="fas fa-heart"></i> Enroll
                             </button>
                         </div>
@@ -108,7 +104,6 @@ const callRestApi = async (studio_id, filter) => {
     //   }
 
 const ClassList = ({ studio_id }) => {
-    
     const [apiResponse, setApiResponse] = useState('');
     const [filter, setFilter] = useState({
         name: '',
