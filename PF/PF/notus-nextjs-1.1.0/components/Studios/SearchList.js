@@ -31,8 +31,7 @@ const callRestApi = async (pos, updateStudios, filter, pgOffset) => {
 
 
 
-	const url = 'http://localhost:8000/studios/list/' + clean_pos + params + `?limit=${perPage}&offset=${pgOffset}`
-	console.log(url)
+	const url = 'http://localhost:8000/studios/search/?' + params + `&limit=${perPage}&offset=${pgOffset}`
     const response = await fetch(url);
     const jsonResponse = await response.json();
 	const arrayOfLists = jsonResponse.results.map(
@@ -93,9 +92,10 @@ function StudioList({ pos, updateStudios }) {
 
 	return(
 	<>
-	<div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
+	<div className="relative flex flex-row min-w-0 w-full break-words rounded mb-6 ">
+	<div className="relative flex flex-col p-4 min-w-0 w-6/12 break-words rounded mb-6 ">
 
-			<div className="relative flex flex-col min-w-0 break-words rounded shadow-lg">
+			<div className="relative flex flex-col min-w-0 break-words rounded bg-white shadow-lg">
 		          <form className="relative flex mb-6 xl:mb-0">
             <div className="relative flex w-full flex-wrap items-stretch">
               <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
@@ -163,7 +163,9 @@ function StudioList({ pos, updateStudios }) {
 
 
 	  	</div>
+	<div className="relative flex flex-col min-w-0 w-6/12 break-words bg-white rounded mb-6 ">
 		{apiResponse}
+	  	</div>
 
 		    {pgOffset > 0 ? 
         <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
@@ -173,6 +175,7 @@ function StudioList({ pos, updateStudios }) {
         <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
             onClick={() => setPgOffset(pgOffset + perPage)}> next </button> : <></>}
+	  	</div>
 	</>
 	)
 }
