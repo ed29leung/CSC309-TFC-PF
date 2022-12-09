@@ -27,7 +27,7 @@ export default function Index() {
                   Sign Up
                 </a>
 	  	</Link>
-	  	<Link href="/studios">
+	  	<Link href="/studios/map">
                 <a
                   className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-600 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
                 >
