@@ -75,7 +75,7 @@ function StudioList({ pos, updateStudios }) {
   useEffect(() => {
       callRestApi(pos, updateStudios, filter).then(
           result => setApiResponse(result));
-  },[pos]);
+  },[pos, filter]);
 
 	function handle(e){
 		const newFilter={...filter}
