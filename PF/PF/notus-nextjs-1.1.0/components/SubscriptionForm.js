@@ -8,8 +8,8 @@ function SubscriptionForm({ color }) {
 	const [subData, setSubData] = useState([]);
     const [selected, setSelected] = useState();
     const [subStatus, setSubStatus] = useState({
+        status: false,
         url: "",
-        message: "",
         method: "",
     });
     //These variables wil be set in the use effect but 
@@ -42,9 +42,9 @@ function SubscriptionForm({ color }) {
             // set the subscription status of the user
             console.log(data.subscription)
             if (data.subscription === true){
-                setSubStatus({url: "update", message: "Currently has a subscription.", method: 'PUT'});
+                setSubStatus({status: true, url: "update", method: 'PUT'});
             }
-            else{setSubStatus({url: "subscribe", message: "Currently not subscribed.", method: 'POST'});}
+            else{setSubStatus({status: false,url: "subscribe", method: 'POST'});}
             fetch('http://localhost:8000/subscriptions/list/').then(res => res.json())
             .then(json => {
                 const plancount = json.count;
@@ -183,12 +183,12 @@ function SubscriptionForm({ color }) {
         </div>
     </div>
         {selected && <h1> Selected Plan: {selected}</h1>}
-        {subStatus && <h1> User: {subStatus.message}</h1>}
+        {subStatus && subStatus.status ? <h1> User currently has subscription plan.</h1> : <h1> User is currently not subscribed. </h1> }
     <form onSubmit={(e) => submit(e)}>
         <div className="text-center mt-6">
             <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                 type="submit">
-                    Update Subscription
+                    {subStatus && subStatus.status ? "Update Subscription" : "Subscribe"}
             </button>
         </div>
     </form>

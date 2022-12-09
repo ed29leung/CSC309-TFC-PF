@@ -79,3 +79,23 @@ class PaymentUpcomingView(APIView):
                        "card_number": payment_history_data.get('card_number'),
                        "card_expiry": payment_history_data.get('card_expiry'), "recurrence": interval}
         return Response(return_data, status=200)
+
+class PaymentInfoView(APIView):
+    """
+    Retreives whether the User has payment information stored in their account or not. 
+    If so, retrives payment info for the logged in user
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        current_account = get_object_or_404(Account, pk=self.request.user.id)
+        if PaymentInfo.objects.filter(account=current_account).exists():
+            payment_info = get_object_or_404(PaymentInfo, account=self.request.user)
+            card_number = payment_info.card_number
+            card_expiry = payment_info.expiry_date
+            name_on_card = payment_info.name_on_card
+            # account = payment_info.account.pk
+
+            return Response({'payinfo': True, 'account': self.request.user.id, 'card_number': card_number, 'card_expiry': card_expiry, 'name_on_card': name_on_card}, status=200)
+        else:
+            return Response({'payinfo': False}, status=200)

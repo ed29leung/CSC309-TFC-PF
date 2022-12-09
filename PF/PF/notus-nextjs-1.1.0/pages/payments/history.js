@@ -1,7 +1,7 @@
 import React from "react";
 import PaymentHistory from "components/PaymentHistory";
 
-export default function Subscribe() {
+export default function PayHistory() {
     return (
       <>
         <div className="flex flex-wrap mt-4">

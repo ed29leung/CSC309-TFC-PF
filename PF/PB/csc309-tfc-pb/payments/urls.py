@@ -4,6 +4,7 @@ from payments.views import (
         PaymentInfoUpdateView,
         ListPaymentHistory,
         PaymentUpcomingView,
+        PaymentInfoView,
         )
 
 app_name = 'payments'
@@ -13,5 +14,6 @@ urlpatterns = [
         path('update/', PaymentInfoUpdateView.as_view()),
         path('history/', ListPaymentHistory.as_view()),
         path('upcoming/', PaymentUpcomingView.as_view()),
+        path('view/', PaymentInfoView.as_view()),
 ]
 
