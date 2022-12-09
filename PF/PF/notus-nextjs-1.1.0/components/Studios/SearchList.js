@@ -88,7 +88,8 @@ function StudioList({ pos, updateStudios }) {
 	function handle(e){
 		const newFilter={...filter}
 		newFilter[e.target.id] = e.target.value
-		setFilter(newFilter)
+		setFilter(newFilter);
+		setPgOffset(0);
 	}
 
 	return(
@@ -166,7 +167,8 @@ function StudioList({ pos, updateStudios }) {
 	  	</div>
 	<div className="relative flex p-4 flex-col min-w-0 w-6/12 break-words rounded mb-6 ">
 		{apiResponse}
-
+	  	</div>
+		  <div>
 		    {pgOffset > 0 ? 
         <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
             type="button"
@@ -175,7 +177,7 @@ function StudioList({ pos, updateStudios }) {
         <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"
             onClick={() => setPgOffset(pgOffset + perPage)}> next </button> : <></>}
-	  	</div>
+		</div>
 	  	</div>
 	</>
 	)
