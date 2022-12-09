@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
-
+import ClassActionButtom from './ClassActionButtom';
 
 const callRestApi = async (studio_id, filter) => {
    // process filter params if they exist
@@ -48,10 +48,8 @@ const callRestApi = async (studio_id, filter) => {
                                 {key.class_detail.description}
                             </p>
 
-                            <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                >
-                                <i className="fas fa-heart"></i> Enroll
-                            </button>
+                            <ClassActionButtom timeid={key.id} op='enroll' />
+
                         </div>
                     </div>
                 </div>
