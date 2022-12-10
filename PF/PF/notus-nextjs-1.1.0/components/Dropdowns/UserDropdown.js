@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createPopper } from "@popperjs/core";
 import authHeader from "services/authHeader";
 import logout from "services/logout.js";
+import Link from "next/link";
 
 const profileViewApi = async (studio_id) => {
 	if (studio_id === '') {
@@ -22,6 +23,7 @@ const UserDropdown = () => {
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverDropdownRef = React.createRef();
+  const [loggedIn, setLoggedIn] = useState(false);
 	const [profileInfo, setProfileInfo] = useState({
 		username: '',
 		first_name: '',
@@ -32,9 +34,6 @@ const UserDropdown = () => {
 
 	useEffect(() => {
     const auth = authHeader();
-    if (!auth){
-      Router.push("/unauthorized");
-    }
         const getOptions = {
           method: 'GET',
           crossDomain: true,
@@ -42,10 +41,20 @@ const UserDropdown = () => {
           headers: {'Content-Type': 'application/json' , 'Authorization': auth},
       };
         fetch('http://localhost:8000/accounts/profile/', getOptions)
-            .then(res => res.json())
+            .then(res =>
+              res.json())
             .then(json => {
                 setProfileInfo(json);
-		    console.log(json);
+                if (json.username){
+                  //logged in
+                  setLoggedIn(true);
+                }
+                else{
+                  setLoggedIn(false);
+                }
+                //We do not catch the error here so that this code can run
+                // and the code can account for a null profile picture
+		    // console.log(json);
             })
     }, [])
 
@@ -60,6 +69,13 @@ const UserDropdown = () => {
     setDropdownPopoverShow(false);
   };
   return (
+    <> {loggedIn === false? 
+    <Link href='/accounts/login/'>
+      <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
+        type="button">
+        Log in
+      </button> 
+    </Link>:
     <>
       <a
         className="text-blueGray-500 block"
@@ -123,6 +139,8 @@ const UserDropdown = () => {
           Logout
         </a>
       </div>
+      </>
+      }
     </>
   );
 };
