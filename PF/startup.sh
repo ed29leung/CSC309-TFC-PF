@@ -1,11 +1,12 @@
 BACKEND_DIR="$(pwd)/PB/csc309-tfc-pb"
 FRONTEND_DIR="$(pwd)/PF/notus-nextjs-1.1.0"
 
-# sudo apt install python3-django python3 python3-pip python3-venv npm
+sudo apt install python3 python3-pip python3-venv npm
 
 # initialize the virtual environment
 python3 -m venv env
 source env/bin/activate
+pip3 install Django
 python3 -m pip install -r $BACKEND_DIR/requirements.txt --force-reinstall
 
 # remove old database
