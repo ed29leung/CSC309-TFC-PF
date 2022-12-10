@@ -1,11 +1,15 @@
 import React from "react";
 import ClassList from "components/ClassList";
 import { useRouter } from 'next/router'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+toast.configure();
 
 export default function Upcoming() {
     const router = useRouter()
     const { studio_id } = router.query
+
 
     return (
         <>
