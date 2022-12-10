@@ -4,6 +4,7 @@ import authHeader from 'services/authHeader';
 import 'react-credit-cards/es/styles-compiled.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Router from "next/router";
 
 toast.configure();
 
