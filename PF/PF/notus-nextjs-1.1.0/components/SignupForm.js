@@ -10,15 +10,19 @@ function SignupForm() {
 		email: "",
 		password: "",
 		password2: "",
-		//avatar: "",
+		avatar: "",
 		phone_number: "",
-	})
+	});
+	const [file, setFile] = useState(null);
+
 
   const [userError, setUserError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [password2Error, setPassword2Error] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
+  const [avatarError, setAvatarError] = useState(null);
+
 
 	// code from https://www.youtube.com/watch?v=9KaMsGSxGno
 	function handle(e){
@@ -26,14 +30,30 @@ function SignupForm() {
 		newData[e.target.id] = e.target.value
 		setData(newData)
 	}
+		function handleAvatar(e){
+		setFile(e.target.files[0])
+	}
+
 	function submit(e){
 		e.preventDefault();
+			const uploadData = new FormData();
+		uploadData.append('username', data.username)
+		uploadData.append('first_name', data.first_name)
+		uploadData.append('last_name', data.last_name)
+		uploadData.append('password', data.password)
+		uploadData.append('password2', data.password2)
+		uploadData.append('email', data.email)
+		if (file !== null) {
+		uploadData.append('avatar', file, file.name)
+		}
+		uploadData.append('phone_number', data.phone_number)
+
 		const requestOptions = {
     		    method: 'POST',
 		    crossDomain: true,
 		    mode: 'cors',
-    		    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    		    body: JSON.stringify(data)
+            	    headers: {'Accept': 'application/json'},
+    		    body: uploadData
     		};
     		fetch('http://localhost:8000/accounts/signup/', requestOptions).then(response => {
           if (!response.ok) {
@@ -71,6 +91,11 @@ function SignupForm() {
           setPhoneError(errorObject.phone_number[0]);
         }
         else{setPhoneError(null);}
+	              if (errorObject.avatar){
+          setAvatarError(errorObject.avatar[0]);
+        }
+        else{setAvatarError(null);}
+
     });
 	}
 	return (
@@ -194,7 +219,6 @@ function SignupForm() {
                     />
                   {phoneError && <h2>{phoneError}</h2>}
                   </div>
-	  		{/*
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -207,10 +231,14 @@ function SignupForm() {
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 			id="avatar"
 			value={data.avatar}
-			onChange={(e) => handle(e)}
+			onChange={(e) => handleAvatar(e)}
+
                     />
+		                      {avatarError && <h2>{avatarError}</h2>}
+
                   </div>
 
+	  		{/*
                   <div>
                     <label className="inline-flex items-center cursor-pointer">
                       <input
