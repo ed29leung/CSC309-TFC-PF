@@ -1,4 +1,4 @@
-import { Router } from 'next/router';
+import Router  from 'next/router';
 import React, { useState, useEffect } from 'react';
 import authHeader from 'services/authHeader';
 import Link from 'next/link';
@@ -20,8 +20,17 @@ const callRestApi = async (studio_id, pgOffset, setTotal) => {
     console.log(jsonResponse)
 
     setTotal(jsonResponse.count);
+    console.log(jsonResponse.results)
+
 
     if (jsonResponse.count !== 0) {
+        // check if results exist
+
+        if (jsonResponse.results == null) {
+            Router.push('/unauthorized');
+            return null;
+        }
+
         // need to render username, class time, class name, class description, coach name
         const arrayOfLists = jsonResponse.results.map(
             key => (

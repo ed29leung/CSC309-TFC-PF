@@ -54,8 +54,8 @@ export default function Login() {
                 </a>
               </div> */}
               <div className="w-full text-center">
-                <Link href="/accounts/signup/">
-                  <a href="#pablo" className="text-blueGray-200">
+                <Link href="/accounts/sign-up/">
+                  <a href="/accounts/sign-up/" className="text-blueGray-200">
                     <small>Create new account</small>
                   </a>
                 </Link>
