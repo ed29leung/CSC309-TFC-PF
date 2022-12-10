@@ -13,6 +13,7 @@ function AccountForm() {
 		avatar: "",
 		phone_number: "",
 	})
+	const [file, setFile] = useState(null);
 
   const [userError, setUserError] = useState(null);
   const [emailError, setEmailError] = useState(null);
@@ -22,6 +23,10 @@ function AccountForm() {
 		const newData={...data}
 		newData[e.target.id] = e.target.value
 		setData(newData)
+	}
+
+	function handleAvatar(e){
+		setFile(e.target.files[0])
 	}
 
     // code from https://www.youtube.com/watch?v=9KaMsGSxGno
@@ -48,13 +53,22 @@ function AccountForm() {
     // reload every time the value changes
 	function submit(e){
 		e.preventDefault();
+	const uploadData = new FormData();
+		uploadData.append('username', data.username)
+		uploadData.append('first_name', data.first_name)
+		uploadData.append('last_name', data.last_name)
+		uploadData.append('email', data.email)
+		if (file !== null) {
+		uploadData.append('avatar', file, file.name)
+		}
+		uploadData.append('phone_number', data.phone_number)
     const auth = authHeader();
 		const requestOptions = {
     		    method: 'PATCH',
 		    crossDomain: true,
 		    mode: 'cors',
-    		    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': auth},
-    		    body: JSON.stringify(data)
+    		    headers: { 'Accept': 'text/html; q=1.0, */*', 'Authorization': auth},
+    		    body: uploadData
     		};
         
     		fetch('http://localhost:8000/accounts/update/', requestOptions).then(response => {
@@ -69,26 +83,27 @@ function AccountForm() {
           Router.push("/accounts/profile/");
       }).catch(error => {
         //render any backend errors here.
-        const errorObject = JSON.parse(error.message);
-        if (errorObject.detail && errorObject.code){
-          //invalid token
-          notify("Session Expired. Please Log in Again");
-          Router.push("/accounts/login/");
-        }
-        if (errorObject.username){
-          setUserError(errorObject.username[0]);
-        }
-        else{setUserError(null);}
+	console.log(error)
+        // const errorObject = JSON.parse(error.message);
+        // if (errorObject.detail && errorObject.code){
+        //   //invalid token
+        //   notify("Session Expired. Please Log in Again");
+        //   Router.push("/accounts/login/");
+        // }
+        // if (errorObject.username){
+        //   setUserError(errorObject.username[0]);
+        // }
+        // else{setUserError(null);}
 
-        if (errorObject.email){
-          setEmailError(errorObject.email[0]);
-        }
-        else{setEmailError(null);}
-        
-        if (errorObject.phone_number){
-          setPhoneError(errorObject.phone_number[0]);
-        }
-        else{setPhoneError(null);}
+        // if (errorObject.email){
+        //   setEmailError(errorObject.email[0]);
+        // }
+        // else{setEmailError(null);}
+        // 
+        // if (errorObject.phone_number){
+        //   setPhoneError(errorObject.phone_number[0]);
+        // }
+        // else{setPhoneError(null);}
     });
 		//TODO: render any backend errors here.
 	}
@@ -178,7 +193,6 @@ function AccountForm() {
                     />
                   {phoneError && <h2>{phoneError}</h2>}
                   </div>
-	  		{/*
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -191,10 +205,11 @@ function AccountForm() {
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 			id="avatar"
 			value={data.avatar}
-			onChange={(e) => handle(e)}
+			onChange={(e) => handleAvatar(e)}
                     />
                   </div>
 
+		{/*
                   <div>
                     <label className="inline-flex items-center cursor-pointer">
                       <input
