@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Cards from 'react-credit-cards';
 import authHeader from 'services/authHeader';
 import 'react-credit-cards/es/styles-compiled.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 function SubView(){
     const [paymentData, setPaymentData] = useState({
@@ -20,6 +24,9 @@ function SubView(){
         name: '',
         number: '',
       });
+
+      // use toast notify to display an alert upon error
+      const notify = (message) => toast(message);
 
       useEffect(() => {
         const auth = authHeader();
@@ -61,14 +68,12 @@ function SubView(){
             const errorObject = JSON.parse(error.message);
             if (errorObject.detail && errorObject.code){
                 //invalid token
-                //TODO: display alert here
+                notify("Session Expired. Please Log in Again");
                 Router.push("/accounts/login/");
             }
             else if (errorObject.error){ //this is custom error from backend
                 console.log(errorObject.error);
-                if (errorObject.error === "No upcoming payments, User is not subscribed"){
-                    //TODO: handle 
-                }
+                notify(errorObject.error);
             }
             // Router.push("/");
         })
