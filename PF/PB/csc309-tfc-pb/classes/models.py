@@ -20,7 +20,7 @@ class Class(m.Model):
     spots = m.IntegerField()
 
     def __str__(self) -> str:
-        return self.name
+        return self.name + ' - ' + self.studio.name
 
     def clean(self):
         if self.class_start > self.class_end:

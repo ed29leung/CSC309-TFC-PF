@@ -1,4 +1,4 @@
-BACKEND_DIR=$(pwd)/PB/csc309-tfc-pb
+BACKEND_DIR="$(pwd)/PB/csc309-tfc-pb"
 
 # initialize the virtual environment
 # python3 -m venv env
@@ -23,3 +23,4 @@ $BACKEND_DIR/manage.py createsuperuser \
 
 # populate the database
 python3 $BACKEND_DIR/manage.py loaddata ./studios.json
+python3 $BACKEND_DIR/manage.py popdb

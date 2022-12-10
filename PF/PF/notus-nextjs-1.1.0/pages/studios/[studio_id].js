@@ -160,8 +160,8 @@ const Post = () => {
 	  </div>
 	  </div>
 	  </div>
-	  <ClassList studio_id={studio_id}/>
 	  </div>
+	  <ClassList studio_id={studio_id}/>
 	  </>
   )
 }

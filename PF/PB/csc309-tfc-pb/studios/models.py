@@ -64,6 +64,10 @@ class Amenities(m.Model):
     studio = m.ForeignKey('Studio', on_delete=m.CASCADE, related_name='amenities')
     amenity_type = m.CharField(max_length=250)
     quantity = m.IntegerField()
+
+    def __str__(self) -> str:
+        return self.amenity_type + " in " + self.studio.name 
+
     class Meta:
         verbose_name_plural = "Amenities"
 
