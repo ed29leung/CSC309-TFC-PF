@@ -10,7 +10,7 @@ function SignupForm() {
 		email: "",
 		password: "",
 		password2: "",
-		avatar: "",
+		avatar: null,
 		phone_number: "",
 	});
 	const [file, setFile] = useState(null);
