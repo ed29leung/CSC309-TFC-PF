@@ -5,8 +5,8 @@ export default class Unauthorized extends Component {
     // componentDidMount = () => {
     //   Router.push("/");
     // };
-  
     render() {
+        Router.push("/accounts/login");
         return (
         <>
         <h2 className="font-semibold text-4xl text-gray-600">
@@ -17,4 +17,5 @@ export default class Unauthorized extends Component {
       </p>
       </>);
     }
+    
   }
