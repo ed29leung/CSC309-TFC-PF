@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from classes.models import Class
 from studios.models import Studio, Amenities, StudioImage
 from classes.models import Class, ClassTimeTable, Keywords, EnrollClass
+from subscriptions.models import SubscriptionPlan, CurrentSubscription
 
 from django.core.files.images import ImageFile
 
@@ -52,6 +53,26 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **kwargs):
 		self.init()
+
+		# add subscription plan
+		SubscriptionPlan.objects.create(
+			payment=7.99,
+			interval="daily",
+		)
+		SubscriptionPlan.objects.create(
+			payment=19.99,
+			interval="weekly",
+		)
+		SubscriptionPlan.objects.create(
+			payment=59.99,
+			interval="monthly",
+		)
+		SubscriptionPlan.objects.create(
+			payment=199.99,
+			interval="yearly",
+		)
+
+
 		studios = Studio.objects.all()
 		for studio in studios:
 			# add some class to each studio
@@ -100,6 +121,6 @@ class Command(BaseCommand):
 					image=ImageFile(open(PIC_DIR +
 						self.pics[random.randint(0, len(self.pics) - 1)], 'rb')),
 				)
-				
+
 
 			
