@@ -9,7 +9,7 @@ toast.configure();
 function PaymentHistory({ color }) {
     const url = ""
     //set the page size 
-    const perPage = 10;
+    const perPage =5;
     // set the initial state of the variable
 	const [historyData, setHistoryData] = useState([]);
     //set the offset variable that determines which page we are on

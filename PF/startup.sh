@@ -1,9 +1,13 @@
-BACKEND_DIR=$(pwd)/PB/csc309-tfc-pb
+BACKEND_DIR="$(pwd)/PB/csc309-tfc-pb"
+FRONTEND_DIR="$(pwd)/PF/notus-nextjs-1.1.0"
+
+sudo apt install python3 python3-pip python3-venv npm
 
 # initialize the virtual environment
-# python3 -m venv env
-# source env/bin/activate
-# python3 -m pip install -r $BACKEND_DIR/requirements.txt --force-reinstall
+python3 -m venv env
+source env/bin/activate
+pip3 install Django
+python3 -m pip install -r $BACKEND_DIR/requirements.txt --force-reinstall
 
 # remove old database
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete 
@@ -22,4 +26,9 @@ $BACKEND_DIR/manage.py createsuperuser \
 --no-input
 
 # populate the database
-python3 $BACKEND_DIR/manage.py loaddata ./studios.json
+python3 $BACKEND_DIR/manage.py loaddata $BACKEND_DIR/startup/management/commands/data/studio.json
+python3 $BACKEND_DIR/manage.py popdb
+
+# install npm packages
+npm i --prefix $FRONTEND_DIR --legacy-peer-deps
+

@@ -46,8 +46,19 @@ const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
                                     </a>
                                     
                                 <span className="text-blueGray-400 uppercase font-bold text-xs">
-                                    {key.time}
+                                    {key.time + '               '} 
                                 </span>
+                                                                
+
+                                {
+                                    key.class_detail.keywords.map(
+                                        key => (
+                                            <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-teal-600 bg-teal-200 uppercase last:mr-0 mr-1">
+                                                {key.keyword}
+                                            </span>
+                                        )
+                                    )
+                                }
 
                                 <p className="mt-2 mb-4 text-blueGray-500">
                                     {key.class_detail.description}
@@ -56,6 +67,7 @@ const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
                                 <ClassActionButtom timeid={key.id} op='enroll' />
 
                             </div>
+                            
                         </div>
                     </div>
                 </div>
