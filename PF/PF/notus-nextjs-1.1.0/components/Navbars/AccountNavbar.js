@@ -36,10 +36,9 @@ export default function Navbar(props) {
           >
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
-            <Link href="/">
+            <Link href="/studios/map">
               <a
                 className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
-                href="/studios/map"
               >
                 Studios
               </a>
