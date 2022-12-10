@@ -49,7 +49,6 @@ function SubscriptionForm({ color }) {
             .then(json => {
                 const plancount = json.count;
                 setSubData(json.results);
-                return json;
             })
         }).catch(error => {
             //if payment upcoming returns error
@@ -85,6 +84,7 @@ function SubscriptionForm({ color }) {
         } //otherwise return the tokens
              return response.json()})
             .then(formData => { //call the response.json() data
+                Router.push("/payments/upcoming/");
               return formData;
           }).catch(error => {
             //render any backend errors here.
