@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cards from 'react-credit-cards';
 import authHeader from 'services/authHeader';
+import Router from 'next/router';
 import 'react-credit-cards/es/styles-compiled.css'
 
 //based off example code here: 
@@ -49,7 +50,6 @@ function PaymentForm() {
               setExisting({exist: true, url: "update", method: "PUT"});
           }
           else{setExisting({exist: false, url: "add", method: "POST"});}
-
       })
       .catch(error => {
           //if payment upcoming returns error
@@ -90,6 +90,7 @@ function PaymentForm() {
       } //otherwise return the tokens
        return response.json()})
       .then(json => { //call the response.json() data
+        Router.push("/subscriptions/subscribe/");
         return json;
     }).catch(error => {
       

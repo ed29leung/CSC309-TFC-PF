@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import React, { useState } from 'react';
 
 function SignupForm() {
@@ -42,7 +43,7 @@ function SignupForm() {
         } //otherwise return the tokens
          return response.json()})
         .then(formData => { //call the response.json() data
-          return formData;
+          Router.push("/accounts/login/");
       }).catch(error => {
         //render any backend errors here.
         const errorObject = JSON.parse(error.message);

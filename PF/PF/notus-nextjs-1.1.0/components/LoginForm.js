@@ -1,3 +1,4 @@
+import Router  from 'next/router';
 import React, { useState } from 'react';
 
 
@@ -41,13 +42,14 @@ function LoginForm() {
             //Source: https://www.bezkoder.com/react-jwt-auth/
             //if login sucessful, store the username from the form data in browser 
             localStorage.setItem("currentUser", data.username);
-            localStorage.removeItem("username");
           }
+          Router.push("/accounts/profile");
           return tokenData;
       }).catch(error => {
         //render any backend errors here.
         // the JSON text is in Error Message, so convert to JSON object using Parse and 
         // then extract the message from the array
+        console.log(error);
         const errorObject = JSON.parse(error.message);
         //console.log(errorObject.username[0]);
         // if the field is in the error response, display error, otherwise remove it

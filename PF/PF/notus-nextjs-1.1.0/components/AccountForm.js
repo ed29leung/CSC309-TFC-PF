@@ -66,7 +66,7 @@ function AccountForm() {
          return response.json()})
         .then(formData => { //call the response.json() data
           //TODO: change username in local storage?
-          return formData;
+          Router.push("/accounts/profile/");
       }).catch(error => {
         //render any backend errors here.
         const errorObject = JSON.parse(error.message);

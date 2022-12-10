@@ -44,7 +44,7 @@ export default function Login() {
               </div>
             </div>
             <div className="flex flex-wrap mt-6 relative">
-              <div className="w-1/2">
+              {/* <div className="w-1/2">
                 <a
                   href="#pablo"
                   onClick={(e) => e.preventDefault()}
@@ -52,9 +52,9 @@ export default function Login() {
                 >
                   <small>Forgot password?</small>
                 </a>
-              </div>
+              </div> */}
               <div className="w-1/2 text-right">
-                <Link href="/auth/register">
+                <Link href="/accounts/signup/">
                   <a href="#pablo" className="text-blueGray-200">
                     <small>Create new account</small>
                   </a>
