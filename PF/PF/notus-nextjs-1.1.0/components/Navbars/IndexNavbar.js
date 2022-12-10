@@ -3,6 +3,7 @@ import Link from "next/link";
 // components
 
 import IndexDropdown from "components/Dropdowns/IndexDropdown.js";
+import UserDropdown from "components/Dropdowns/UserDropdown.js";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -86,7 +87,7 @@ export default function Navbar(props) {
               </li>
 	      */}
 
-              <li className="flex items-center">
+              <li className="flex items-center mr-4">
                 <Link href="/studios/map">
                   <a
                     className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
@@ -96,16 +97,10 @@ export default function Navbar(props) {
                   </a>
 	        </Link>
               </li>
-              <li className="flex items-center">
-	  	<Link href="/accounts/login">
-                <button
-                  className="bg-orange-500 text-white active:bg-orange-500 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-                  type="button"
-                >
-                  <i className="fas"></i> Log In
-                </button>
-	  	</Link>
-              </li>
+	            <li className="flex-col md:flex-row list-none items-center mt-1 hidden md:flex">
+            <UserDropdown />
+          </li>
+
             </ul>
           </div>
         </div>
