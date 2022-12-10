@@ -1,6 +1,8 @@
 import React from "react";
 import PaymentForm from "components/PaymentForm";
 
+import Auth from "layouts/Auth.js";
+
 export default function AddPayment() {
     return (
         <>
@@ -18,3 +20,5 @@ export default function AddPayment() {
         </>
       );
 }
+
+AddPayment.layout = Auth;
