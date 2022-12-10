@@ -70,11 +70,24 @@ class UpdateSubscriptionView(generics.UpdateAPIView):
         # use get object or 404 because we are updating specific current subscription with an id and account
         # use current_account because we only want logged-in user to be able to edit their subscriptions
         current_sub = get_object_or_404(CurrentSubscription, account=current_account)
-        sub_plan_id = self.request.data['plan']
-        if sub_plan_id != "":  # if the user did not unsubscribe, but picked yearly or monthly
-            create_payment_history(current_account, sub_plan_id)
+        if self.request.data.get('plan'):
+            sub_plan_id = self.request.data.get('plan')
+            if sub_plan_id != "":  # if the user did not unsubscribe, but picked yearly or monthly
+                create_payment_history(current_account, sub_plan_id)
         return current_sub
         # will return "Not found" if current subscription does not belong to user
+
+class CancelSubscriptionView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CurrentSubscriptionSerializer
+    def get_object(self, **kwargs):
+        # return CurrentSubscription.objects.filter(account=self.kwargs['pk'], id=self.kwargs['subscription'])
+        current_account = get_object_or_404(Account, id=self.request.user.id)
+        # use get object or 404 because we are updating specific current subscription with an id and account
+        # use current_account because we only want logged-in user to be able to edit their subscriptions
+        current_sub = get_object_or_404(CurrentSubscription, account=current_account)
+        return current_sub
+
 
 class ListSubscriptionView(generics.ListAPIView):
     """
