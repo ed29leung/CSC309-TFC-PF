@@ -97,7 +97,7 @@ function SubscriptionForm({ color }) {
         } //otherwise return the tokens
              return response.json()})
             .then(formData => { //call the response.json() data
-                Router.push("/payments/upcoming/");
+                Router.push("/payments/");
               return formData;
           }).catch(error => {
             //render any backend errors here.
@@ -208,7 +208,7 @@ function SubscriptionForm({ color }) {
                         Otherwise set as create subscription */}
                     {subStatus && subStatus.status ? "Update Subscription" : "Subscribe"}
             </button> :
-            <Link href='/payments/add/'> 
+            <Link href='/payments/'> 
             <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                 type="submit">
                     {"Add Payment Info"}

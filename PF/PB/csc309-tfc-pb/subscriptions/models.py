@@ -33,6 +33,11 @@ class CurrentSubscription(m.Model):
                         self.expiration = current_expiry.replace(month=current_expiry.month + 1)
                 elif plan_interval == "yearly":
                     self.expiration = current_expiry.replace(year=current_expiry.year + 1)
+                elif plan_interval == "weekly":
+                    # use datetime.timedelta to update the date rather than replace
+                    self.expiration = current_expiry + datetime.timedelta(days=7)
+                elif plan_interval == "daily":
+                    self.expiration = current_expiry + datetime.timedelta(days=1)
             else:
                 self.expiration = None
         super(CurrentSubscription, self).save(*args, **kwargs)
