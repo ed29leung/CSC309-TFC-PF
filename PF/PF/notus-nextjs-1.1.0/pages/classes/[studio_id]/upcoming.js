@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 toast.configure();
 
+import Auth from "layouts/Auth.js";
+
 export default function Upcoming() {
     const router = useRouter()
     const { studio_id } = router.query
@@ -23,3 +25,5 @@ export default function Upcoming() {
         </>
     );
 }
+
+Upcoming.layout = Auth;
