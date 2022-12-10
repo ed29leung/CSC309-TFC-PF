@@ -4,9 +4,10 @@ import authHeader from 'services/authHeader';
 import Link from 'next/link';
 import ClassActionButtom from './ClassActionButtom';
 
+const PER_PAGE = 4;
 
-const callRestApi = async (studio_id) => {
-    const url = 'http://localhost:8000/classes/' + studio_id + '/schedule/';
+const callRestApi = async (studio_id, pgOffset, setTotal) => {
+    const url = 'http://localhost:8000/classes/' + studio_id + '/schedule/' + `?limit=${PER_PAGE}&offset=${pgOffset}`;
     const auth = authHeader();
     if (auth === null) {
         Router.push('accounts/login/');
@@ -17,6 +18,8 @@ const callRestApi = async (studio_id) => {
     });
     const jsonResponse = await response.json();
     console.log(jsonResponse)
+
+    setTotal(jsonResponse.count);
 
     if (jsonResponse.count !== 0) {
         // need to render username, class time, class name, class description, coach name
@@ -71,11 +74,13 @@ const callRestApi = async (studio_id) => {
 
 const ClassHistory = ({ studio_id }) => {
     const [apiResponse, setApiResponse] = useState('');
+    const [pgOffset, setPgOffset] = useState(0);
+    const [total, setTotal] = useState(0);
 
     // response might be an array
     useEffect(() => {
-        callRestApi(studio_id).then(response => setApiResponse(response));
-    }, [studio_id]);
+        callRestApi(studio_id, pgOffset, setTotal).then(response => setApiResponse(response));
+    }, [studio_id, pgOffset]);
 
     return (
         <div className="flex flex-wrap">
@@ -89,9 +94,20 @@ const ClassHistory = ({ studio_id }) => {
                     <div className="block w-full overflow-x-auto">
                         {apiResponse}
                     </div>
+                    <div>
+                            {pgOffset > 0 ? 
+                        <button className="bg-orange-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
+                            type="button"
+                            onClick={() => setPgOffset(Math.max(0, pgOffset - PER_PAGE))}> prev </button> : <></>}
+                    { pgOffset < (total - PER_PAGE) ? 
+                        <button className="bg-orange-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            type="button"
+                            onClick={() => setPgOffset(pgOffset + PER_PAGE)}> next </button> : <></>}
+                        </div>
                 </div>
             </div>
         </div>
+        
     );
 };
 

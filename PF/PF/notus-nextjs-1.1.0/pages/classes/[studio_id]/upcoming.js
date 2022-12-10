@@ -12,7 +12,6 @@ export default function Upcoming() {
     const router = useRouter()
     const { studio_id } = router.query
 
-
     return (
         <>
             <div className="flex flex-wrap mt-4">

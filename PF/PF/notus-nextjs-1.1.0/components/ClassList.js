@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import ClassActionButtom from './ClassActionButtom';
 
-const callRestApi = async (studio_id, filter) => {
+const PER_PAGE = 4;
+
+
+const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
    // process filter params if they exist
    // example: http://127.0.0.1:8000/classes/1/upcoming/?classid__name=1&classid__coach=1&classid__duration=1&time=1
 
@@ -19,87 +22,68 @@ const callRestApi = async (studio_id, filter) => {
     if (filter.time !== '') {
         params = params + 'time=' + filter.time + '&'
     }
-    params = params.slice(0, -1)
 
-    const url = 'http://localhost:8000/classes/' + studio_id + '/upcoming/' + params
+    const url = 'http://localhost:8000/classes/' + studio_id + '/upcoming/' + params + `limit=${PER_PAGE}&offset=${pgOffset}`
     const response = await fetch(url);
     const jsonResponse = await response.json();
     console.log(jsonResponse)
 
-    const arrayOfLists = jsonResponse.results.map(
-        key => (
-            <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
-                <div className="flex-auto p-4">
-                    <div className="flex flex-wrap">
-                        <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-                            
-                                <a>
-                                    <h3 className="font-semibold text-xl text-blueGray-700">
-                                        {key.class_detail.name
-                                            + ' - ' + key.class_detail.coach}
-                                    </h3>
-                                </a>
+    setTotal(jsonResponse.count);
+
+    if (jsonResponse.count !== 0) {
+        const arrayOfLists = jsonResponse.results.map(
+            key => (
+                <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
+                    <div className="flex-auto p-4">
+                        <div className="flex flex-wrap">
+                            <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                                 
-                            <span className="text-blueGray-400 uppercase font-bold text-xs">
-                                {key.time}
-                            </span>
+                                    <a>
+                                        <h3 className="font-semibold text-xl text-blueGray-700">
+                                            {key.class_detail.name
+                                                + ' - ' + key.class_detail.coach}
+                                        </h3>
+                                    </a>
+                                    
+                                <span className="text-blueGray-400 uppercase font-bold text-xs">
+                                    {key.time}
+                                </span>
 
-                            <p className="mt-2 mb-4 text-blueGray-500">
-                                {key.class_detail.description}
-                            </p>
+                                <p className="mt-2 mb-4 text-blueGray-500">
+                                    {key.class_detail.description}
+                                </p>
 
-                            <ClassActionButtom timeid={key.id} op='enroll' />
+                                <ClassActionButtom timeid={key.id} op='enroll' />
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )
         )
-    )
-    return arrayOfLists;
+
+        return arrayOfLists;
+    }
+    else {
+        return <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
+            <div className="flex-auto p-4">
+                <div className="flex flex-wrap">
+                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
+                        <h3 className="font-semibold text-xl text-blueGray-700">
+                            No class has been scheduled yet.
+                        </h3>
+
+                        <p className="mt-2 mb-4 text-blueGray-500">
+                            Please check back later.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }
 
-    // example response:
-    // {
-    //     "count": 3,
-    //     "next": null,
-    //     "previous": null,
-    //     "results": [
-    //       {
-    //         "id": 3,
-    //         "time": "2022-12-14T12:38:35-05:00",
-    //         "spotleft": 5,
-    //         "class_detail": {
-    //           "name": "sleep",
-    //           "description": "tired",
-    //           "coach": "me",
-    //           "keywords": []
-    //         }
-    //       },
-    //       {
-    //         "id": 4,
-    //         "time": "2022-12-21T12:38:35-05:00",
-    //         "spotleft": 5,
-    //         "class_detail": {
-    //           "name": "sleep",
-    //           "description": "tired",
-    //           "coach": "me",
-    //           "keywords": []
-    //         }
-    //       },
-    //       {
-    //         "id": 5,
-    //         "time": "2022-12-28T12:38:35-05:00",
-    //         "spotleft": 5,
-    //         "class_detail": {
-    //           "name": "sleep",
-    //           "description": "tired",
-    //           "coach": "me",
-    //           "keywords": []
-    //         }
-    //       }
-    //     ]
-    //   }
 
 const ClassList = ({ studio_id }) => {
     const [apiResponse, setApiResponse] = useState('');
@@ -109,17 +93,23 @@ const ClassList = ({ studio_id }) => {
         duration: '',
         time: '' });
 
+
+    const [pgOffset, setPgOffset] = useState(0);
+    const [total, setTotal] = useState(0);
+
     useEffect(() => {
-        callRestApi(studio_id, filter).then(
+        callRestApi(studio_id, filter, pgOffset, setTotal).then(
             res => setApiResponse(res)
         );
     }
-    , [studio_id]);
+    , [studio_id, filter, pgOffset]);
+
 
     function handle(e){
 		const newFilter={...filter}
 		newFilter[e.target.id] = e.target.value
 		setFilter(newFilter)
+        setPgOffset(0);
         console.log(newFilter)
 	}
 
@@ -189,6 +179,16 @@ const ClassList = ({ studio_id }) => {
                         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                             {apiResponse}
                         </div>
+                        <div>
+                            {pgOffset > 0 ? 
+                        <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" 
+                            type="button"
+                            onClick={() => setPgOffset(Math.max(0, pgOffset - PER_PAGE))}> prev </button> : <></>}
+                    { pgOffset < (total - PER_PAGE) ? 
+                        <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            type="button"
+                            onClick={() => setPgOffset(pgOffset + PER_PAGE)}> next </button> : <></>}
+                        </div>
                     </div>
                 </div>                                                                        
             </div>
@@ -197,3 +197,45 @@ const ClassList = ({ studio_id }) => {
 }
 
 export default ClassList;
+
+    // example response:
+    // {
+    //     "count": 3,
+    //     "next": null,
+    //     "previous": null,
+    //     "results": [
+    //       {
+    //         "id": 3,
+    //         "time": "2022-12-14T12:38:35-05:00",
+    //         "spotleft": 5,
+    //         "class_detail": {
+    //           "name": "sleep",
+    //           "description": "tired",
+    //           "coach": "me",
+    //           "keywords": []
+    //         }
+    //       },
+    //       {
+    //         "id": 4,
+    //         "time": "2022-12-21T12:38:35-05:00",
+    //         "spotleft": 5,
+    //         "class_detail": {
+    //           "name": "sleep",
+    //           "description": "tired",
+    //           "coach": "me",
+    //           "keywords": []
+    //         }
+    //       },
+    //       {
+    //         "id": 5,
+    //         "time": "2022-12-28T12:38:35-05:00",
+    //         "spotleft": 5,
+    //         "class_detail": {
+    //           "name": "sleep",
+    //           "description": "tired",
+    //           "coach": "me",
+    //           "keywords": []
+    //         }
+    //       }
+    //     ]
+    //   }
