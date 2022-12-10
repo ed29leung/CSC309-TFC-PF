@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import Admin from "layouts/Admin.js";
 import React, { useState, useEffect } from 'react';
+import ClassList from 'components/ClassList';
 
 const studioViewApi = async (studio_id) => {
 	if (studio_id === '') {
@@ -159,6 +160,7 @@ const Post = () => {
 	  </div>
 	  </div>
 	  </div>
+	  <ClassList studio_id={studio_id}/>
 	  </div>
 	  </>
   )
