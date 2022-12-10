@@ -72,6 +72,7 @@ function AccountForm() {
         const errorObject = JSON.parse(error.message);
         if (errorObject.detail && errorObject.code){
           //invalid token
+          notify("Session Expired. Please Log in Again");
           Router.push("/accounts/login/");
         }
         if (errorObject.username){

@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 import SubscriptionForm from "components/SubscriptionForm";
 import authHeader from "services/authHeader";
 import Router from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+toast.configure();
 
 import Admin from "layouts/Admin.js";
 
@@ -12,6 +15,7 @@ export default function CancelSubscription() {
     //declare variable here so we can assign it in the useEffect
 
     //use useffect to get the authorization on load
+    const notify = (message) => toast(message);
     useEffect(() => {
         auth = authHeader();
         if (!auth){
@@ -41,9 +45,11 @@ export default function CancelSubscription() {
             console.log(error);
             const errorObject = JSON.parse(error.message);
             if (errorObject.detail){
-                //TODO: handle error
+                notify("No subscription found or subscription already cancelled.")
             }
         })
+        notify("You have cancelled your subscription");
+        Router.push("/accounts/profile/");
         }
   return (
     <>

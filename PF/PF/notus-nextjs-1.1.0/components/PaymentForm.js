@@ -57,7 +57,7 @@ function PaymentForm() {
           const errorObject = JSON.parse(error.message);
           if (errorObject.detail && errorObject.code){
               //invalid token
-              //TODO: display alert here
+              notify("Session Expired. Please Log in Again");
               Router.push("/accounts/login/");
           }
           else if (errorObject.error){ //this is custom error from backend

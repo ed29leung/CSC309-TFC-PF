@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Router from "next/router";
 import authHeader from 'services/authHeader';
 import Link from "next/link";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 function SubscriptionForm({ color }) {
     const url = ""
     // set the initial state of the variable
 	const [subData, setSubData] = useState([]);
     const [selected, setSelected] = useState();
+    const [pay, setPay] = useState(true);
     const [subStatus, setSubStatus] = useState({
         status: false,
         url: "",
@@ -23,6 +28,9 @@ function SubscriptionForm({ color }) {
         // the state variable for the selected plan
         setSelected(planid);
     }
+    // use notify to display an alert upon error
+    const notify = (message) => toast(message);
+
     useEffect(() => {
         const auth = authHeader();
         if (!auth){
@@ -56,12 +64,16 @@ function SubscriptionForm({ color }) {
             //person does not have a payment or subscription
             const errorObject = JSON.parse(error.message);
             if (errorObject.detail && errorObject.code){
-                //invalid 
-                //TODO: display alert here
+                //invalid login
+                notify("Session Expired. Please Log in Again");
                 Router.push("/accounts/login/");
             }
             else if (errorObject.error){ //this is custom error from backend
                 console.log(errorObject.error);
+                notify(errorObject.error);
+                setPay(false);
+                // This probably means there is no payment info for user 
+
             }
         })
         }, [])
@@ -187,18 +199,30 @@ function SubscriptionForm({ color }) {
         {subStatus && subStatus.status ? <h1> User currently has subscription plan.</h1> : <h1> User is currently not subscribed. </h1> }
     <form onSubmit={(e) => submit(e)}>
         <div className="text-center mt-6">
+            {/* if else statement here. Display add payment button or subscribe button based on if 
+                user has payment info */}
+            { pay === true ? 
             <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                 type="submit">
+                    {/* if else statement here. If user has subsciption info, display update subscription
+                        Otherwise set as create subscription */}
                     {subStatus && subStatus.status ? "Update Subscription" : "Subscribe"}
+            </button> :
+            <Link href='/payments/add/'> 
+            <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                type="submit">
+                    {"Add Payment Info"}
             </button>
+            </Link>
+            }
         </div>
     </form>
     <div className="text-center mt-6">
-            {subStatus && subStatus.status ?
+            {subStatus && subStatus.status === true ?
             <Link href='/subscriptions/cancel'>
-            <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-            > Cancel Subscription
-            </button>
+                <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                > Cancel Subscription
+                </button>
             </Link>
             : <></>}
     </div>

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Router from "next/router";
 import authHeader from 'services/authHeader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 function PaymentHistory({ color }) {
     const url = ""
@@ -13,6 +17,8 @@ function PaymentHistory({ color }) {
     //have to make this a state variable??
     const [total, setTotal] = useState(0);
     
+    // use toast notify to display an alert upon error
+    const notify = (message) => toast(message);
 
     useEffect(() => {
         const auth = authHeader();
@@ -33,6 +39,9 @@ function PaymentHistory({ color }) {
         .then(data => {
             // set the subscription status of the user
             //update the total number of objects so we can decide when to display next button
+            if (data.count == 0){
+                notify("No payments in User's payment History");
+            }
             setTotal(data.count);
             setHistoryData(data.results);
         }).catch(error => {
@@ -41,13 +50,13 @@ function PaymentHistory({ color }) {
             const errorObject = JSON.parse(error.message);
             if (errorObject.detail && errorObject.code){
                 //invalid token
-                //TODO: display alert here
+                notify("Session Expired. Please Log in Again");
                 Router.push("/accounts/login/");
             }
             else if (errorObject.error){ //this is custom error from backend
                 console.log(errorObject.error);
+                notify(errorObject.error);
             }
-            // Router.push("/");
         })
         }, [pgOffset])
         //whenever pgOffset is changed by next and previous, reload the table with the new page
