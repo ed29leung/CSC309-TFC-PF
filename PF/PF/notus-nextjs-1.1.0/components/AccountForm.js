@@ -18,6 +18,7 @@ function AccountForm() {
   const [userError, setUserError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
+  const [avatarError, setAvatarError] = useState(null);
   // Need handle code to edit fields on forms
   function handle(e){
 		const newData={...data}
@@ -67,7 +68,7 @@ function AccountForm() {
     		    method: 'PATCH',
 		    crossDomain: true,
 		    mode: 'cors',
-    		    headers: { 'Accept': 'text/html; q=1.0, */*', 'Authorization': auth},
+    		    headers: { 'Accept': 'application/json', 'Authorization': auth},
     		    body: uploadData
     		};
         
@@ -84,26 +85,30 @@ function AccountForm() {
       }).catch(error => {
         //render any backend errors here.
 	console.log(error)
-        // const errorObject = JSON.parse(error.message);
-        // if (errorObject.detail && errorObject.code){
-        //   //invalid token
-        //   notify("Session Expired. Please Log in Again");
-        //   Router.push("/accounts/login/");
-        // }
-        // if (errorObject.username){
-        //   setUserError(errorObject.username[0]);
-        // }
-        // else{setUserError(null);}
+        const errorObject = JSON.parse(error.message);
+        if (errorObject.detail && errorObject.code){
+          //invalid token
+          notify("Session Expired. Please Log in Again");
+          Router.push("/accounts/login/");
+        }
+        if (errorObject.username){
+          setUserError(errorObject.username[0]);
+        }
+        else{setUserError(null);}
 
-        // if (errorObject.email){
-        //   setEmailError(errorObject.email[0]);
-        // }
-        // else{setEmailError(null);}
-        // 
-        // if (errorObject.phone_number){
-        //   setPhoneError(errorObject.phone_number[0]);
-        // }
-        // else{setPhoneError(null);}
+        if (errorObject.email){
+          setEmailError(errorObject.email[0]);
+        }
+        else{setEmailError(null);}
+        
+        if (errorObject.phone_number){
+          setPhoneError(errorObject.phone_number[0]);
+        }
+        else{setPhoneError(null);}
+        if (errorObject.avatar){
+          setAvatarError(errorObject.avatar[0]);
+        }
+        else{setAvatarError(null);}
     });
 		//TODO: render any backend errors here.
 	}
@@ -207,6 +212,7 @@ function AccountForm() {
 			value={data.avatar}
 			onChange={(e) => handleAvatar(e)}
                     />
+                  {avatarError && <h2>{avatarError}</h2>}
                   </div>
 
 		{/*
