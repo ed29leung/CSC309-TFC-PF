@@ -53,7 +53,7 @@ export default function Login() {
                   <small>Forgot password?</small>
                 </a>
               </div> */}
-              <div className="w-1/2 text-right">
+              <div className="w-full text-center">
                 <Link href="/accounts/signup/">
                   <a href="#pablo" className="text-blueGray-200">
                     <small>Create new account</small>
