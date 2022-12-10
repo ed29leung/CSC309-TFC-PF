@@ -28,6 +28,9 @@ class Studio(m.Model):
     postal_code = m.CharField(max_length=250)
     phone_number = m.CharField(max_length=250)
 
+    def __str__(self) -> str:
+        return self.name
+
     # Following method sourced from user @rphlo at
     # https://stackoverflow.com/questions/19703975/django-sort-by-distance
     def get_locations_nearby_coords(latitude, longitude, max_distance=None):

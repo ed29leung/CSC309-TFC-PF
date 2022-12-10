@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ClassHistory from "components/ClassHistory";
 import { useRouter } from 'next/router'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import authHeader from "services/authHeader";
 
 toast.configure();
 
@@ -10,6 +11,15 @@ toast.configure();
 export default function Upcoming() {
     const router = useRouter()
     const { studio_id } = router.query
+    
+    useEffect(() => {
+        const auth = authHeader();
+        if (!auth){
+            router.push("/unauthorized");
+            console.log("not logged in")
+        }
+    }, [])
+
 
     return (
         <>
