@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_yasg",
     "corsheaders",
+    "startup"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
