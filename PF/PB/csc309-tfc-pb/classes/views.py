@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 import django_filters.rest_framework
 from django.db.models import Prefetch
+from subscriptions.models import CurrentSubscription, SubscriptionPlan
 
 from classes.models import Class, ClassTimeTable, EnrollClass
 from classes.serializers import ClassSerializer, ClassTimeTableSerializer, EnrollClassSerializer
@@ -66,6 +67,8 @@ class ModifyClassView(APIView):
         if op not in ['enroll', 'drop']:
             return Response({'error': 'op must be either enroll or drop'}, status=400)
 
+        if not CurrentSubscription.objects.filter(account=request.user).exists():
+            return Response({'error': 'You need to subscribe to gym first!'}, status=400)
 
         if EnrollClass.check_enroll(user, classtime) and op == 'enroll':
             return Response({'error': 'Already enrolled'}, status=400)
