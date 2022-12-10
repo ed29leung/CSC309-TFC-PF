@@ -58,7 +58,7 @@ const callRestApi = async (studio_id) => {
                     <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                             <h6 className="font-semibold text-blueGray-700">You haven't enroll any classe yet.</h6>
-                            <Link href="/classes/[studio_id]/upcoming" as={`/classes/${studio_id}/upcoming`}>
+                            <Link href="/studios/[studio_id]" as={`/studios/${studio_id}`}>
                                 <a className="font-semibold text-blueGray-400">Click here to enroll some class</a>
                             </Link>
                         </div>

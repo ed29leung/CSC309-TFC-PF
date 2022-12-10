@@ -5,6 +5,8 @@ import Footer from "components/Footers/Footer.js";
 import authHeader from "services/authHeader";
 import Router from "next/router";
 
+import ClassHistory from "components/ClassHistory";
+
 const profileViewApi = async (studio_id) => {
 	if (studio_id === '') {
 		return null
