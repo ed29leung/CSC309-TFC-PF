@@ -104,6 +104,10 @@ const UserDropdown = () => {
           "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
         }
       >
+        <div>
+          <h2 className="text-sm py-2 px-4 font-bold block w-full whitespace-nowrap bg-transparent text-blueGray-700">
+            {profileInfo.username}</h2>
+        </div>
         <a
           href="/accounts/profile"
           className={
