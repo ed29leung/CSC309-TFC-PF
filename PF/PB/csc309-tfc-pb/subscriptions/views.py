@@ -10,6 +10,7 @@ from subscriptions.serializers import (
 from django.shortcuts import get_object_or_404
 from payments.models import PaymentInfo, PaymentHistory
 from accounts.models import Account
+from classes.models import EnrollClass, ClassTimeTable
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import datetime
@@ -86,6 +87,11 @@ class CancelSubscriptionView(generics.DestroyAPIView):
         # use get object or 404 because we are updating specific current subscription with an id and account
         # use current_account because we only want logged-in user to be able to edit their subscriptions
         current_sub = get_object_or_404(CurrentSubscription, account=current_account)
+        current_expiry = current_sub.expiration
+        current_expiry_datetime = datetime.datetime.combine(current_expiry, datetime.datetime.min.time())
+        query = EnrollClass.objects.filter(classtime__id__in=ClassTimeTable.objects.filter(time__gte=current_expiry_datetime))
+        for thing in query:
+            thing.drop()
         return current_sub
 
 
