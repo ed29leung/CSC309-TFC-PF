@@ -35,6 +35,8 @@ const ClassActionButtom = ( prop ) => {
         return new Promise((resolve, reject) => {
             if (response.status === 200) {
                 resolve("Success: " + jsonResponse.success);
+            } else if (response.status === 401) {
+                reject(Error("Error: You need to login first"));
             } else {
                 reject(Error("Error: " + jsonResponse.error));
             }

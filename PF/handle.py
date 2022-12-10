@@ -56,6 +56,55 @@ Youth Fitness (10+)  	This program is designed to teach youth the fundamentals o
 Zumba  	This class fuses hypnotic Latin and International rhythms with easy-to-follow moves to create a dynamic workout. 
 """
 
+namelist = [
+    "George Washington",
+"John Adams",
+"Thomas Jefferson",
+"James Madison",
+"James Monroe",
+"John Quincy Adams",
+"Andrew Jackson",
+"Martin Van Buren",
+"William H. Harrison",
+"John Tyler",
+"James K. Polk",
+"Zachary Taylor",
+"Millard Fillmore",
+"Franklin Pierce",
+"James Buchanan",
+"Abraham Lincoln",
+"Andrew Johnson",
+"Ulysses S. Grant",
+"Rutherford B. Hayes",
+"James A. Garfield",
+"Chester A. Arthur",
+"Grover Cleveland",
+"Benjamin Harrison",
+"Grover Cleveland",
+"William McKinley",
+"Theodore Roosevelt",
+"William Howard Taft",
+"Woodrow Wilson",
+"Warren G. Harding",
+"Calvin Coolidge",
+"Herbert Hoover",
+"Franklin D. Roosevelt",
+"Harry S. Truman",
+"Dwight D. Eisenhower",
+"John F. Kennedy",
+"Lyndon B. Johnson",
+"Richard Nixon",
+"Gerald Ford",
+"James (Jimmy) Carter",
+"Ronald Reagan",
+"George H.W. Bush",
+"William (Bill) Clinton",
+"George W. Bush",
+"Barack Obama",
+"Donald Trump",
+"Joe Biden"
+]
+
 text1 = [i.strip().strip('\xa0') for i in text.replace('\n', '\t').split('\t')]
 
 index = dict()
@@ -65,3 +114,6 @@ for i in range(0, len(text1) - 1, 2):
 
 with open('class.json', 'w') as f:
     json.dump(index, f, indent=4)
+
+with open("name.json", 'w') as f:
+    json.dump(namelist, f, indent=4)

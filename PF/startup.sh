@@ -1,4 +1,5 @@
-BACKEND_DIR=$(pwd)/PB/csc309-tfc-pb
+BACKEND_DIR="$(pwd)/PB/csc309-tfc-pb"
+FRONTEND_DIR="$(pwd)/PF/notus-nextjs-1.1.0"
 
 # initialize the virtual environment
 # python3 -m venv env
@@ -22,4 +23,9 @@ $BACKEND_DIR/manage.py createsuperuser \
 --no-input
 
 # populate the database
-python3 $BACKEND_DIR/manage.py loaddata ./studios.json
+python3 $BACKEND_DIR/manage.py loaddata $BACKEND_DIR/startup/management/commands/data/studio.json
+python3 $BACKEND_DIR/manage.py popdb
+
+# install npm packages
+npm i --prefix $FRONTEND_DIR --legacy-peer-deps
+

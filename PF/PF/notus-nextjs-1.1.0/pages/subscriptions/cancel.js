@@ -53,9 +53,17 @@ export default function CancelSubscription() {
         }
   return (
     <>
+	  	<div className="container mx-auto px-4 h-full">
+            <div className="flex content-center items-center justify-center h-full">
+              <div className="w-full px-4">
+                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0">
+                  <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 px-4">
-        <p className="text-base font-light leading-relaxed mt-0 mb-4 text-lightBlue-800">
+
+      <div className="flex flex-wrap mt-4">
+        <div className="w-full mb-12 px-4">
+        <p className="text-base font-semibold leading-relaxed mt-0 mb-4 text-lightBlue-800">
             Are you sure you want to cancel your subscription? This will terminate your coverage immediately, and
             You will need to buy a new subscription plan to resume coverage. 
         </p>
@@ -67,6 +75,14 @@ export default function CancelSubscription() {
             </div>
         </div>
       </div>
+        </div>
+      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
     </>
   );
 }
+CancelSubscription.layout = Admin;

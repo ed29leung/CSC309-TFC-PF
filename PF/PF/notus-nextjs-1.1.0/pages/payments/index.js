@@ -5,6 +5,8 @@ import SubView from "components/SubView";
 import authHeader from "services/authHeader";
 import Link from "next/link";
 
+import Admin from "layouts/Admin.js";
+
 const Tabs = () => {
   const [openTab, setOpenTab] = useState(1);
   useEffect(() => {
@@ -17,6 +19,14 @@ const Tabs = () => {
     }, [])
   return (
     <>
+	  	  	<div className="container mx-auto px-4 h-full">
+            <div className="flex content-center items-center justify-center h-full">
+              <div className="w-full px-4">
+                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0">
+                  <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+      <div className="flex flex-wrap mt-4">
+        <div className="w-full mb-12 px-4">
+
       <div className="flex flex-wrap">
         <div className="w-full">
           <ul
@@ -102,8 +112,15 @@ const Tabs = () => {
           </div>
         </div>
       </div>
+        </div>
+      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
     </>
   );
 };
-
+Tabs.layout=Admin;
 export default Tabs;
