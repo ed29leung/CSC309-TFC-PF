@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Router from "next/router";
 import authHeader from 'services/authHeader';
+import Link from "next/link";
 
 function SubscriptionForm({ color }) {
     const url = ""
@@ -192,6 +193,15 @@ function SubscriptionForm({ color }) {
             </button>
         </div>
     </form>
+    <div className="text-center mt-6">
+            {subStatus && subStatus.status ?
+            <Link href='/subscriptions/cancel'>
+            <button className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+            > Cancel Subscription
+            </button>
+            </Link>
+            : <></>}
+    </div>
     </>
     );
 }

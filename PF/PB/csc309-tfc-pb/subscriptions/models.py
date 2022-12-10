@@ -11,7 +11,7 @@ class SubscriptionPlan(m.Model):
 
 class CurrentSubscription(m.Model):
     account = m.OneToOneField('accounts.Account', on_delete=m.CASCADE, related_name='account_subscription')
-    plan = m.ForeignKey('SubscriptionPlan', on_delete=m.CASCADE, null=True, blank=True, related_name='current_plan')
+    plan = m.ForeignKey('SubscriptionPlan', on_delete=m.CASCADE, related_name='current_plan')
     expiration = m.DateField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
