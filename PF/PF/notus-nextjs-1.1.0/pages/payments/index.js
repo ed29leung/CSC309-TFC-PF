@@ -12,6 +12,8 @@ const Tabs = () => {
     if (!auth){
         Router.push("/unauthorized");
       }
+    //this tab is open by default
+    setOpenTab(2);
     }, [])
   return (
     <>

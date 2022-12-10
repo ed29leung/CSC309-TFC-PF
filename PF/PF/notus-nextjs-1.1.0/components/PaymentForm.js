@@ -3,6 +3,15 @@ import Cards from 'react-credit-cards';
 import authHeader from 'services/authHeader';
 import Router from 'next/router';
 import 'react-credit-cards/es/styles-compiled.css'
+import {
+  formatCreditCardNumber,
+  formatCVV,
+  formatExpirationDate
+} from "./PaymentUtils";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 //based off example code here: 
 // https://www.npmjs.com/package/react-credit-cards 
@@ -16,13 +25,31 @@ function PaymentForm() {
       number: '',
     });
     const [existing, setExisting] = useState ({exist: false, url: "", method: ""});
+    
+    const notify = (message) => toast(message);
+
+    function convertExpiryDate(data){
+      // https://stackoverflow.com/a/14630840 
+      var month=parseInt(data.substr(0,2));
+      //subsstring from index 2
+      var year=parseInt("20"+ data.substr(2,2));
+      return `${year}-${month}-01`
+    }
 
     function handleInputFocus(e) {
       // keep the previous state of variable payData using ...payData but change the focus
       setPayData({...payData,focus: e.target.name})}
-    
+
+    //validation partially from here: https://codesandbox.io/s/ovvwzkzry9 
     function handleInputChange(e) {
       // keep the previous state of variable payData but change the name: value
+      if (e.target.name === "number") {
+        e.target.value = formatCreditCardNumber(e.target.value);}
+      else if (e.target.name === "cvc") {
+        e.target.value = formatCVV(e.target.value);}
+      else if (e.target.name === "expiry") {
+        e.target.value = formatExpirationDate(e.target.value);}
+      // format before setting the name and value
       const { name, value } = e.target;
       setPayData({...payData, [name]: value });
     }
@@ -78,7 +105,7 @@ function PaymentForm() {
                   "name_on_card": payData.name,
                   "card_number": payData.number,
                   "cvv": payData.cvc,
-                  "expiry_date": payData.expiry
+                  "expiry_date": convertExpiryDate(payData.expiry)
               })
       };
       fetch(`http://localhost:8000/payments/${existing.url}/`, requestOptions)
@@ -90,9 +117,15 @@ function PaymentForm() {
       } //otherwise return the tokens
        return response.json()})
       .then(json => { //call the response.json() data
-        Router.push("/subscriptions/subscribe/");
-        return json;
+        notify("Sucessfully Updated Payment Info")
+        Router.push("/payments/");
+        //do not return json here for reouter to work
     }).catch(error => {
+      const errorObject = JSON.parse(error.message);
+      if (errorObject.expiry_date){
+        console.log(errorObject.expiry_date[0]);
+        notify(errorObject.expiry_date[0]);
+      }
       
   });
 }
