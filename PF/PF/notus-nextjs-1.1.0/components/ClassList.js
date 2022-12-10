@@ -34,13 +34,13 @@ const callRestApi = async (studio_id, filter) => {
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                             
                                 <a>
-                                    <h3 className="text-blueGray-400 uppercase font-bold text-xs">
+                                    <h3 className="font-semibold text-xl text-blueGray-700">
                                         {key.class_detail.name
                                             + ' - ' + key.class_detail.coach}
                                     </h3>
                                 </a>
                                 
-                            <span className="font-semibold text-xl text-blueGray-700">
+                            <span className="text-blueGray-400 uppercase font-bold text-xs">
                                 {key.time}
                             </span>
 
