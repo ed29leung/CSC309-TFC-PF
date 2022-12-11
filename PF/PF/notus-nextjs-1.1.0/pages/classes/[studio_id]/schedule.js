@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import authHeader from "services/authHeader";
 
+import Admin from "layouts/Admin.js";
+
 toast.configure();
 
 
@@ -33,3 +35,4 @@ export default function Upcoming() {
         </>
     );
 }
+Upcoming.layout = Admin;
