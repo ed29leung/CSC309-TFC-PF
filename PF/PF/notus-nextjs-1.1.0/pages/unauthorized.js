@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import Router from "next/router";
 
 export default class Unauthorized extends Component {
-    // componentDidMount = () => {
-    //   Router.push("/");
-    // };
+    componentDidMount = () => {
+      Router.push("/accounts/login");
+    };
     render() {
-        Router.push("/accounts/login");
         return (
         <>
         <h2 className="font-semibold text-4xl text-gray-600">
