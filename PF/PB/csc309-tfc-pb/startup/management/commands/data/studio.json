@@ -39,7 +39,7 @@
       "model": "studios.studio",
       "pk": 4,
       "fields": {
-        "name": "GoodLife Fitness Toronto Yonge and St Clair",
+        "name": "BadLife Fitness Toronto Yonge and St Clair",
         "address": "12 St Clair Ave E, Toronto, ON",
         "latitude": 43.68890293515418,
         "longitude": -79.3940384931643,
@@ -63,7 +63,7 @@
       "model": "studios.studio",
       "pk": 6,
       "fields": {
-        "name": "GoodLife Fitness Toronto Mount Pleasant and Davisville",
+        "name": "BadLife Fitness Toronto Mount Pleasant and Davisville",
         "address": "250 Davisville Ave, Toronto, ON",
         "latitude": 43.70115879757394,
         "longitude": -79.3864170011153,
@@ -87,7 +87,7 @@
       "model": "studios.studio",
       "pk": 8,
       "fields": {
-        "name": "GoodLife Fitness Toronto Coxwell and Gerrard",
+        "name": "BadLife Fitness Toronto Coxwell and Gerrard",
         "address": "280 Coxwell Ave, Toronto, ON",
         "latitude": 43.67883985537076,
         "longitude": -79.34539083179828,
@@ -99,7 +99,7 @@
       "model": "studios.studio",
       "pk": 9,
       "fields": {
-        "name": "GoodLife Fitness Toronto Dunfield and Eglinton",
+        "name": "BadLife Fitness Toronto Dunfield and Eglinton",
         "address": "110 Eglinton Ave E, Toronto, ON",
         "latitude": 43.70806380130035,
         "longitude": -79.39513133974927,
@@ -135,7 +135,7 @@
       "model": "studios.studio",
       "pk": 12,
       "fields": {
-        "name": "GoodLife Fitness Toronto 137 Yonge Street",
+        "name": "BadLife Fitness Toronto 137 Yonge Street",
         "address": "137 Yonge St, Toronto, ON",
         "latitude": 43.65168162287364,
         "longitude": -79.3778078902573,
