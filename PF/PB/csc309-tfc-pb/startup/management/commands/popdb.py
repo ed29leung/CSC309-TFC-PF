@@ -85,15 +85,16 @@ class Command(BaseCommand):
 				class_start = datetime.datetime.now() + datetime.timedelta(days=random.randint(1, 50))
 				days_inbetween = random.randint(5, 7)
 
+				class_num = random.randint(0, len(self.classes) - 1)
 				obj = Class.objects.create(
 					studio=studio,
-					name=self.classes[random.randint(0, len(self.classes) - 1)][0],
-					description=self.classes[random.randint(0, len(self.classes) - 1)][1],
+					name=self.classes[class_num][0],
+					description=self.classes[class_num][1],
 					coach=self.names[random.randint(0, len(self.names) - 1)],
 					class_start=class_start,
 					class_end=class_start + datetime.timedelta(days=random.randint(1, self.max_time_per_class) * days_inbetween),
 					class_time=(datetime.datetime.now() + datetime.timedelta(hours=random.randint(1, 10))).time(),
-					duration=datetime.timedelta(minutes=random.randint(30, 120)),
+					duration=datetime.timedelta(hours=random.randint(1, 3)),
 					days_inbetween=days_inbetween,
 					spots=random.randint(1, self.max_spot_per_class),
 				)

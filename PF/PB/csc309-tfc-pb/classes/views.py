@@ -14,20 +14,33 @@ from classes.models import Class, ClassTimeTable, EnrollClass
 from classes.serializers import ClassSerializer, ClassTimeTableSerializer, EnrollClassSerializer
 
 from accounts.models import Account
+import datetime
 
 class ListUpcomingClassView(generics.ListAPIView):
     """
     List upcoming classes in a given studio.
     """
     serializer_class = ClassTimeTableSerializer
-    search_fields = ['classid__name', 'classid__coach', 'classid__duration', 'time']
-    filterset_fields = search_fields
+    search_fields = ['classid__name', 'classid__coach', 'duration', 'timefrom', 'timeto']
+    # filterset_fields = search_fields
 
     def get_queryset(self):
-        return ClassTimeTable.objects.filter(time__gte=timezone.now()).\
+        result = ClassTimeTable.objects.filter(time__gte=timezone.now()).\
             filter(spotleft__gt=0).\
             filter(classid__in=Class.objects.filter(studio=self.kwargs['studio_id'])).\
+            filter(classid__name__contains=self.request.query_params.get('classid__name', '')).\
+            filter(classid__coach__contains=self.request.query_params.get('classid__coach', '')).\
             order_by('time')
+        if self.request.query_params.get('timefrom', ''):
+            result = result.filter(time__gte=self.request.query_params.get('timefrom', ''))
+        if self.request.query_params.get('timeto', ''):
+            result = result.filter(time__lte=self.request.query_params.get('timeto', ''))
+        if self.request.query_params.get('duration', ''):
+            if self.request.query_params.get('duration', '').isdigit():
+                timedelta = datetime.timedelta(hours=int(self.request.query_params.get('duration', '')))
+                result = result.filter(classid__duration__lte=timedelta)
+        return result
+        
 
 
 class ListMyClassView(generics.ListAPIView):

@@ -19,7 +19,7 @@ class ClassSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Class
-        fields = ['name', 'description', 'coach', 'keywords']
+        fields = ['name', 'description', 'coach', 'keywords', 'duration']
 
 class ClassTimeTableSerializer(serializers.ModelSerializer):
     ''' As a user, I want to see the class schedule of a specific studio on its page. 

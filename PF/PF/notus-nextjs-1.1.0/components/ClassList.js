@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import ClassActionButtom from './ClassActionButtom';
 
+import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle'; 
+import 'react-calendar/dist/Calendar.css'; import 'react-clock/dist/Clock.css'; 
+import 'react-datetime-picker/dist/DateTimePicker.css';
+import { format, parseISO } from 'date-fns';
+
+
 const PER_PAGE = 4;
 
 
-const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
+const callRestApi = async (studio_id, filter, pgOffset, setTotal, TimeFrom, TimeTo) => {
    // process filter params if they exist
    // example: http://127.0.0.1:8000/classes/1/upcoming/?classid__name=1&classid__coach=1&classid__duration=1&time=1
 
@@ -17,10 +23,15 @@ const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
         params = params + 'classid__coach=' + filter.coach + '&'
     }
     if (filter.duration !== '') {
-        params = params + 'classid__duration=' + filter.duration + '&'
+        params = params + 'duration=' + filter.duration + '&'
     }
-    if (filter.time !== '') {
-        params = params + 'time=' + filter.time + '&'
+    if (TimeFrom !== null) {
+        var timestamp = format(TimeFrom, 'yyyy-MM-dd HH:mm:ss')
+        params = params + 'timefrom=' + timestamp + '&'
+    }
+    if (TimeTo !== null) {
+        var timestamp = format(TimeTo, 'yyyy-MM-dd HH:mm:ss')
+        params = params + 'timeto=' + timestamp + '&'
     }
 
     const url = 'http://localhost:8000/classes/' + studio_id + '/upcoming/' + params + `limit=${PER_PAGE}&offset=${pgOffset}`
@@ -45,9 +56,9 @@ const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
                                         </h3>
                                     </a>
                                     
-                                <span className="text-blueGray-400 uppercase font-bold text-xs">
-                                    {key.time + '               '} 
-                                </span>
+                                <a className="text-blueGray-400 uppercase font-bold text-xs">
+                                    { parseISO(key.time).toLocaleString() + '           ' }
+                                </a>
                                                                 
 
                                 {
@@ -60,9 +71,18 @@ const callRestApi = async (studio_id, filter, pgOffset, setTotal) => {
                                     )
                                 }
 
+                                <p className="text-blueGray-400 font-bold text-xs">
+                                    {"Time Length: " + key.class_detail.duration}
+                                </p>
+
                                 <p className="mt-2 mb-4 text-blueGray-500">
                                     {key.class_detail.description}
                                 </p>
+
+                                
+
+
+
 
                                 <ClassActionButtom timeid={key.id} op='enroll' />
 
@@ -103,27 +123,42 @@ const ClassList = ({ studio_id }) => {
         name: '',
         coach: '',
         duration: '',
-        time: '' });
+    });
 
 
     const [pgOffset, setPgOffset] = useState(0);
     const [total, setTotal] = useState(0);
 
+    const [TimeFrom, setTimeFrom] = useState(null);
+    const [TimeTo, setTimeTo] = useState(null);
+
     useEffect(() => {
-        callRestApi(studio_id, filter, pgOffset, setTotal).then(
+        callRestApi(studio_id, filter, pgOffset, setTotal, TimeFrom, TimeTo).then(
             res => setApiResponse(res)
         );
     }
-    , [studio_id, filter, pgOffset]);
+    , [studio_id, filter, pgOffset, TimeFrom, TimeTo]);
 
 
     function handle(e){
 		const newFilter={...filter}
+        console.log(e)
 		newFilter[e.target.id] = e.target.value
 		setFilter(newFilter)
         setPgOffset(0);
         console.log(newFilter)
 	}
+
+    function handleTimeFrom(e){
+        setTimeFrom(e)
+        setPgOffset(0);
+    }
+
+    function handleTimeTo(e){
+        setTimeTo(e)
+        setPgOffset(0);
+    }
+
 
     return (
         <>
@@ -158,22 +193,32 @@ const ClassList = ({ studio_id }) => {
                                     </div>
                                 </div>
                                 <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-                                    Duration
+                                    Course Length Less Than (hours)
                                 </h6>
                                 <div className="flex flex-wrap">
                                     <div className="w-full lg:w-12/12 px-4">
                                         <div className="relative w-full mb-3">
-                                            <input type="text" id="duration" onChange={(e)=>handle(e)} className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Duration" value={filter.duration}/>
+                                            <input type="text" id="duration" onChange={(e)=>handle(e)} className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Within" value={filter.within}/>
                                         </div>
                                     </div>
                                 </div>
                                 <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-                                    Time
+                                    From
                                 </h6>
                                 <div className="flex flex-wrap">
                                     <div className="w-full lg:w-12/12 px-4">
                                         <div className="relative w-full mb-3">
-                                            <input type="text" id="time" onChange={(e)=>handle(e)} className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Time" value={filter.time}/>
+                                            <DateTimePicker onChange={(e)=>handleTimeFrom(e)} value={TimeFrom} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+                                    To
+                                </h6>
+                                <div className="flex flex-wrap">
+                                    <div className="w-full lg:w-12/12 px-4">
+                                        <div className="relative w-full mb-3">
+                                            <DateTimePicker onChange={(e)=>handleTimeTo(e)} value={TimeTo} />
                                         </div>
                                     </div>
                                 </div>
