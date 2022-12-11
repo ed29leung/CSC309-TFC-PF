@@ -55,6 +55,7 @@ class Command(BaseCommand):
 		self.init()
 
 		# add subscription plan
+		print("Adding subscription plan")
 		SubscriptionPlan.objects.create(
 			payment=7.99,
 			interval="daily",
@@ -76,6 +77,8 @@ class Command(BaseCommand):
 		studios = Studio.objects.all()
 		for studio in studios:
 			# add some class to each studio
+
+			print("Adding classes to studio {}".format(studio.name))
 
 			for i in range(random.randint(1, self.max_class_per_studio)):
 
@@ -105,6 +108,7 @@ class Command(BaseCommand):
 					)
 
 			# add some amenity to each studio
+			print("Adding amenities to studio {}".format(studio.name))
 
 			for i in range(random.randint(1, self.max_amenity_per_studio)):
 				amenity = self.amenities[random.randint(0, len(self.amenities) - 1)]
@@ -115,6 +119,7 @@ class Command(BaseCommand):
 				)
 
 			# add some image to each studio
+			print("Adding images to studio {}".format(studio.name))
 			for i in range(random.randint(1, self.max_image_per_studio)):
 				StudioImage.objects.create(
 					studio=studio,
