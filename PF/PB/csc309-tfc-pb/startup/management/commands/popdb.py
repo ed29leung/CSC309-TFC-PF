@@ -93,7 +93,7 @@ class Command(BaseCommand):
 					coach=self.names[random.randint(0, len(self.names) - 1)],
 					class_start=class_start,
 					class_end=class_start + datetime.timedelta(days=random.randint(1, self.max_time_per_class) * days_inbetween),
-					class_time=(datetime.datetime.now() + datetime.timedelta(hours=random.randint(1, 10))).time(),
+					class_time=(datetime.datetime.now() + datetime.timedelta(minutes=random.randint(1, 150))).time(),
 					duration=datetime.timedelta(hours=random.randint(1, 3)),
 					days_inbetween=days_inbetween,
 					spots=random.randint(1, self.max_spot_per_class),
