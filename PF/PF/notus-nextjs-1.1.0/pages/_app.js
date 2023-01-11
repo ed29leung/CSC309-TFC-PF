@@ -71,7 +71,8 @@ export default class MyApp extends App {
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
           <title>TFC</title>
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbisf0uGt1jIv8MN7CoZJANe0M7iGXgac"></script>
+          {/* include google maps api key here */}
+          <script src=""></script>
         </Head>
         <Layout>
           <Component {...pageProps} />
